@@ -6,8 +6,10 @@ import Card from './Card.vue';
 import ShowPokemonDetail from './ShowPokemonDetail.vue';
 
 let functionQueue = new FunctionQueue();
-let offset = -8;
+const limit = 8;
+let offset = (limit * -1);
 let pokemonSearch = '';
+let showPokeball = ref(true);
 
 const loadPokemonData = async (resolve, reject) => {
     lastFunction.value = loadPokemonData;
@@ -15,7 +17,7 @@ const loadPokemonData = async (resolve, reject) => {
 }
 
 let lastFunction = ref(loadPokemonData);
-
+let isSearching = ref(false);
 const state = reactive({
     pokemonData: [],
     selectedPokemon: null,
@@ -29,9 +31,9 @@ const handleCardClick = (pokemon, index) => {
 
 const fetchPokemonData = async (resolve, reject, url) => {
     try {
-        offset += 8;
-        const response = await fetch(`${url}?limit=8&offset=${offset}`);
+        offset += limit;
 
+        const response = await fetch(`${url}?limit=${limit}&offset=${offset}`);
         if (!response.ok) {
             lastFunction.value = null;
             resolve();
@@ -89,7 +91,8 @@ const fetchPokemonData = async (resolve, reject, url) => {
                 stats: stats
             });
         }
-        if (length < 8) lastFunction.value = null;
+        showPokeball.value = length === limit;
+        if (!showPokeball.value) { lastFunction.value = null};
 
         resolve();
 
@@ -99,7 +102,13 @@ const fetchPokemonData = async (resolve, reject, url) => {
     };
 
 }
-
+const loadAllPokemonButton = () => {
+    document.querySelector('form').reset();
+    offset = (limit * -1);
+    state.pokemonData = [];
+    lastFunction.value = loadPokemonData;
+    functionQueue.enqueue(lastFunction.value);
+}
 
 onMounted(() => {  
     const target = document.querySelector('#loader');
@@ -109,9 +118,9 @@ onMounted(() => {
         // Loop over the entries
         entries.forEach(entry => {
             // Check if the target is visible
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !isSearching.value) {
                 // Run your code for when the div becomes visible
-                if (lastFunction.value) {
+                if (lastFunction.value && showPokeball.value) {
                     functionQueue.enqueue(lastFunction.value);
                     console.log('Pokemon data loaded'); 
                 } else {
@@ -129,18 +138,40 @@ onMounted(() => {
 });
 
 async function searchPokemonData(resolve, reject) {
-    offset = -8;
+    showPokeball.value = false;
+    offset = (limit * -1);
 
-    fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon/${pokemonSearch}`);
+    fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon/${pokemonSearch.toLowerCase()}`);
 }
 
-async function submit() {
-    state.pokemonData = [];
-    if (lastFunction || state.pokemonData.length) {
-        await searchPokemonData();
-        return
+const submit = async () => {
+    const clear = document.querySelector('.search');
+
+    if (!isValidSearch(pokemonSearch)) {
+        clear.setCustomValidity('Invalid search. Please enter a valid pokemon name or id.');
+        clear.reportValidity();
+        return;
     }
-    lastFunction.value = searchPokemonData;
+
+    isSearching = true;
+    state.pokemonData = [];
+
+    await new Promise((resolve, reject) => {
+        searchPokemonData(resolve, reject);
+    })
+    .then(() => {
+        if (lastFunction.value) lastFunction.value = searchPokemonData;
+        isSearching = false;
+    }); 
+}
+
+// Função para validar o input
+function isValidSearch(input) {
+    // Verifica se o input é uma string/char ou um inteiro
+    const isStringOrInt = /^[a-zA-Z0-9]+$/.test(input);
+    // Verifica se o input está vazio
+    const isNotEmpty = input.trim() !== '';
+    return isStringOrInt && isNotEmpty;
 }
 
 </script>
@@ -151,13 +182,16 @@ async function submit() {
         <div class="dex-container">
 
             <form action="" @submit.prevent="submit">
-                <input type="text" placeholder="enter a pokemon or an id" v-model="pokemonSearch">
+                <input type="text" oninput="this.setCustomValidity(''); this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch">
             </form>
-            {{ pokemonSearch }}
+            
+            <button @click="loadAllPokemonButton">
+                load all pokemon
+            </button>
 
             <div class="dex-innerContainer">
 
-                <p v-if="!state.pokemonData.length">No pokémon found...</p>
+                <p v-if="!state.pokemonData.length &&  !isSearching">No pokémon found...</p>
 
                 <Card v-for="(pokemon, index) in state.pokemonData" :key="index" :name="pokemon.name"
                     :imageUrl=pokemon.cardImageUrl :number="index + 1" :abilities=pokemon.abilities :types=pokemon.types
@@ -167,7 +201,7 @@ async function submit() {
 
 
                 <div id="loader">
-                    <img src="https://media.tenor.com/Cm7KfjVqri4AAAAi/pokemon-pokeball.gif" alt="loader" v-if="lastFunction || state.pokemonData.length">
+                    <img src="https://media.tenor.com/Cm7KfjVqri4AAAAi/pokemon-pokeball.gif" alt="loader" v-if="showPokeball">
                 </div>
 
 
