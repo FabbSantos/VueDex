@@ -1,85 +1,136 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --orange-base: #E95B1E;
+  --orange-light: #E96830;
+  --black: #050505;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --grass: #74CB48;
+  --bug: #A7B723;
+  --dark: #75574C;
+  --dragon: #7037FF;
+  --electric: #F9CF30;
+  --fairy: #E69EAC;
+  --fighting: #C12239;
+  --psychic: #FB5584;
+  --steel: #B7B9D0;
+  --fire: #F57D31;
+  --flying: #A891EC;
+  --ghost: #70559B;
+  --normal: #AAA67F;
+  --ground: #DEC16B;
+  --ice: #9AD6DF;
+  --poison: #A43E9E;
+  --rock: #B69E31;
+  --water: #6493EB;
 }
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease-in-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
+.type-grass {
+  background-color: var(--grass);
+}
+
+.type-bug {
+  background-color: var(--bug);
+}
+
+.type-dark {
+  background-color: var(--dark);
+}
+
+.type-dragon {
+  background-color: var(--dragon);
+}
+
+.type-electric {
+  background-color: var(--electric);
+}
+
+.type-fairy {
+  background-color: var(--fairy);
+}
+
+.type-fighting {
+  background-color: var(--fighting);
+}
+
+.type-psychic {
+  background-color: var(--psychic);
+}
+
+.type-steel {
+  background-color: var(--steel);
+}
+
+.type-fire {
+  background-color: var(--fire);
+}
+
+.type-flying {
+  background-color: var(--flying);
+}
+
+.type-ghost {
+  background-color: var(--ghost);
+}
+
+.type-normal {
+  background-color: var(--normal);
+}
+
+.type-ground {
+  background-color: var(--ground);
+}
+
+.type-ice {
+  background-color: var(--ice);
+}
+
+.type-poison {
+  background-color: var(--poison);
+}
+
+.type-rock {
+  background-color: var(--rock);
+}
+
+.type-water {
+  background-color: var(--water);
+}
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+
+}
+html{
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
   line-height: 1.6;
+
   font-family:
-    Inter,
+    "Urbanist",
+    system-ui,
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
-    Roboto,
-    Oxygen,
     Ubuntu,
     Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
     sans-serif;
-  font-size: 15px;
+
+  font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
