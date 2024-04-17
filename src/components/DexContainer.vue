@@ -5,6 +5,7 @@ import FunctionQueue from '../utils/FunctionQueue';
 import Card from './Card.vue';
 import ShowPokemonDetail from './ShowPokemonDetail.vue';
 import Species from './Species.vue';
+import Types from './Types.vue';
 
 let functionQueue = new FunctionQueue();
 const limit = 10;
@@ -212,6 +213,10 @@ function isValidSearch(input) {
                         placeholder="enter a pokemon or an id" v-model="pokemonSearch">
 
                     <Species
+                        :fetchPokemonData = fetchPokemonData
+                        :clearPokemonList = clearPokemonList
+                    />
+                    <Types
                         :fetchPokemonData = fetchPokemonData
                         :clearPokemonList = clearPokemonList
                     />
