@@ -7,7 +7,8 @@
         abilities: Array,
         types: Array,
         index: Number, 
-        stats: Array
+        stats: Array,
+        allSprites: Array
     })
     const emit = defineEmits(['card-click']);
     const emitCardClick = () => {
@@ -27,7 +28,7 @@
 
 <style>
     .card-wrapper {
-        margin-bottom: 1rem;
+        margin-bottom: .8rem;
         max-width: 60%;
         filter: drop-shadow(-1px 3px 2px rgba(50, 50, 0, 0.5));
         transition: all .3s ease-in-out;
@@ -50,7 +51,7 @@
 
         position: relative;
         width: 100%;
-        padding-block: .6rem;
+        padding-block: .5rem;
         padding-inline: 1rem;
         display: grid;
         grid-template-columns: .4fr .3fr 1fr;

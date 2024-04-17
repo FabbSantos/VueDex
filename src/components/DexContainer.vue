@@ -4,9 +4,10 @@ import FunctionQueue from '../utils/FunctionQueue';
 
 import Card from './Card.vue';
 import ShowPokemonDetail from './ShowPokemonDetail.vue';
+import Species from './Species.vue';
 
 let functionQueue = new FunctionQueue();
-const limit = 8;
+const limit = 10;
 let offset = (limit * -1);
 let pokemonSearch = '';
 let showPokeball = ref(true);
@@ -18,22 +19,29 @@ const loadPokemonData = async (resolve, reject) => {
 
 let lastFunction = ref(loadPokemonData);
 let isSearching = ref(false);
+
 const state = reactive({
     pokemonData: [],
     selectedPokemon: null,
     selectedCardIndex: null,
 });
 
+// Função para lidar com o clique do card
 const handleCardClick = (pokemon, index) => {
+    if (state.selectedCardIndex === index) {
+        state.selectedPokemon = null;
+        state.selectedCardIndex = null;
+        return;
+    }
     state.selectedPokemon = pokemon;
     state.selectedCardIndex = index; 
 };
-
+// função principal que faz a requisição dos dados dos pokemons
 const fetchPokemonData = async (resolve, reject, url) => {
     try {
         offset += limit;
-
         const response = await fetch(`${url}?limit=${limit}&offset=${offset}`);
+
         if (!response.ok) {
             lastFunction.value = null;
             resolve();
@@ -48,8 +56,6 @@ const fetchPokemonData = async (resolve, reject, url) => {
 
         const length = data.results?.length ?? 0;
 
-
-
         for (let i = 0; i < length; i++) {
             let pokemonUrlData = null;
             if (data.results[i].url) {
@@ -62,14 +68,23 @@ const fetchPokemonData = async (resolve, reject, url) => {
             let abilities = [];
             let types = [];
             let stats = [];
+            let allSprites = [];
 
 
-            types.push(...pokemonUrlData.types.map(t => t.type.name))
+            const validSprites = Object.entries(pokemonUrlData.sprites)
+                .filter(([_, sprite]) => sprite  && typeof sprite !== 'object')
+                .map(([_, sprite]) => sprite);
+            
+            const flatSprites = validSprites.flat();
 
+            allSprites.push(...flatSprites);
+
+            types.push(...pokemonUrlData.types.map(t => t.type.name));
+            
             abilities.push(...pokemonUrlData.abilities.map(a => ({
                 name: a.ability.name,
                 isHidden: a.is_hidden
-            })))
+            })));
 
             stats.push(...pokemonUrlData.stats.map(s => ({
                 name: s.stat.name,
@@ -85,10 +100,12 @@ const fetchPokemonData = async (resolve, reject, url) => {
             state.pokemonData.push({
                 name: data.results[i].name,
                 url: data.results[i].url,
+                id: pokemonUrlData.id,
                 cardImageUrl: cardImageUrl,
                 abilities: abilities,
                 types: types,
-                stats: stats
+                stats: stats,
+                sprites: allSprites
             });
         }
         showPokeball.value = length === limit;
@@ -102,8 +119,12 @@ const fetchPokemonData = async (resolve, reject, url) => {
     };
 
 }
+
+// Função para carregar todos os pokemons após clicar no botão
 const loadAllPokemonButton = () => {
-    document.querySelector('form').reset();
+    state.selectedPokemon = null;
+    state.selectedCardIndex = null;
+    pokemonSearch = '';
     offset = (limit * -1);
     state.pokemonData = [];
     lastFunction.value = loadPokemonData;
@@ -136,7 +157,7 @@ onMounted(() => {
     // Start observing the target
     observer.observe(target);
 });
-
+// Função para pesquisar um pokemon
 async function searchPokemonData(resolve, reject) {
     showPokeball.value = false;
     offset = (limit * -1);
@@ -144,6 +165,7 @@ async function searchPokemonData(resolve, reject) {
     fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon/${pokemonSearch.toLowerCase()}`);
 }
 
+// Função para submeter a pesquisa
 const submit = async () => {
     const clear = document.querySelector('.search');
 
@@ -174,36 +196,58 @@ function isValidSearch(input) {
     return isStringOrInt && isNotEmpty;
 }
 
+// Função para pesquisar um pokemon por espécie
+// const pokemonSearcBySpecie = async (specie) => {
+//     pokemonSearch = specie;
+// }
 </script>
 
 <template>
     <div class="content-container">
 
         <div class="dex-container">
+            <div class="form-container">
+                <form action="" @submit.prevent="submit">
+                    <input type="text" oninput="this.setCustomValidity(''); this.reportValidity()" class="search"
+                        placeholder="enter a pokemon or an id" v-model="pokemonSearch">
 
-            <form action="" @submit.prevent="submit">
-                <input type="text" oninput="this.setCustomValidity(''); this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch">
-            </form>
-            
-            <button @click="loadAllPokemonButton">
-                load all pokemon
-            </button>
+                    <!-- <Species
+                        :onSelect = "pokemonSearcBySpecie"
+                    /> -->
+                </form>
+
+                <button @click="loadAllPokemonButton">
+                    <svg fill="#fff" height="20px" width="20px" version="1.1" id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 482.827 482.827" xml:space="preserve" stroke="#fff">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <path
+                                        d="M241.413,0C171.855,0,106.16,30.011,60.606,81.465v-81.1H40.913v119.433h119.433v-19.692H70.671 c41.954-50.628,104.403-80.413,170.743-80.413c122.26,0,221.721,99.462,221.721,221.721s-99.462,221.721-221.721,221.721 S19.692,363.673,19.692,241.413c0-18.471,2.279-36.851,6.779-54.625l-19.096-4.827C2.481,201.313,0,221.317,0,241.413 c0,133.115,108.298,241.413,241.413,241.413s241.413-108.298,241.413-241.413S374.529,0,241.413,0z">
+                                    </path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </div>
 
             <div class="dex-innerContainer">
 
                 <p v-if="!state.pokemonData.length &&  !isSearching">No pokémon found...</p>
-
                 <Card v-for="(pokemon, index) in state.pokemonData" :key="index" :name="pokemon.name"
-                    :imageUrl=pokemon.cardImageUrl :number="index + 1" :abilities=pokemon.abilities :types=pokemon.types
-                    :stats=pokemon.stats :index="index" :class="{ 'selected-card': index === state.selectedCardIndex }"
-                    @card-click="handleCardClick" />
-
+                    :imageUrl=pokemon.cardImageUrl :number="pokemon.id" :abilities=pokemon.abilities
+                    :types=pokemon.types :stats=pokemon.stats :index="index" :allSprites=pokemon.sprites
+                    :class="{ 'selected-card': index === state.selectedCardIndex }" @card-click="handleCardClick" />
 
 
                 <div id="loader">
-                    <img src="https://media.tenor.com/Cm7KfjVqri4AAAAi/pokemon-pokeball.gif" alt="loader" v-if="showPokeball">
+                    <img src="https://media.tenor.com/Cm7KfjVqri4AAAAi/pokemon-pokeball.gif" alt="loader"
+                        v-if="showPokeball">
                 </div>
-
 
             </div>
         </div>
@@ -211,9 +255,11 @@ function isValidSearch(input) {
         <Transition>
             <ShowPokemonDetail :key="state.selectedPokemon.name" v-if="state.selectedPokemon"
                 :abilities=state.selectedPokemon.abilities :types=state.selectedPokemon.types
+                :number=state.selectedPokemon.number
                 :stats=state.selectedPokemon.stats :name="state.selectedPokemon.name"
-                :imageUrl="state.selectedPokemon.imageUrl" />
+                :imageUrl="state.selectedPokemon.imageUrl" :allSprites=state.selectedPokemon.allSprites />
         </Transition>
+
 
     </div>
 </template>
@@ -241,10 +287,10 @@ function isValidSearch(input) {
     width: 100%;
     overflow-y: scroll;
     background-color: var(--orange-light);
-    height: 100%;
+    height: 95%;
     max-width: 90%;
     clip-path: polygon(0 0, 62% 0, 100% 100%, 0% 100%);
-    padding: 3rem;
+    padding: 2rem;
 
 
     scrollbar-width: none;
@@ -252,9 +298,59 @@ function isValidSearch(input) {
     -ms-overflow-style: none;
         /* Internet Explorer 10+ */
 }
-    .dex-innerContainer::-webkit-scrollbar {
-        display: none;
-        /* Chrome, Safari, e Opera */
+.dex-innerContainer::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, e Opera */
+}
+
+.form-container {
+    display: flex;
+    justify-content: start;
+    padding: 1rem;
+    align-items: center;
+    gap: 1rem;
+    
+    button {
+        margin-left: 1rem;
+        background-color: transparent;
+        cursor: pointer;
+        border: none;
+        &:hover svg {
+            animation: rotate 2s cubic-bezier(0, 0, 0, 0) infinite;
+        }
+    }
+}
+input {
+    padding: .5rem;
+    font-size: .8rem;
+    border-radius: 7px;
+    margin-left: 1rem;
+    background-color: var(--orange);
+    border: 2px solid black;
+    width: 100%;
+    color: white;
+    max-width: 300px;
+    font-size: 1rem;
+    transition: background-color .3s ease;
+    font-family: inherit;
+    &:hover {
+        border: 2px solid white;
+        background-color: black;
+    }
+}
+::placeholder {
+    font-size: .9rem;
+    color: rgba(255, 255, 255, .8);
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
     }
 
+}
 </style>

@@ -1,4 +1,5 @@
 <script setup>
+import { ref, computed } from 'vue';
 import PokemonType from './PokemonType.vue';
 
     const props = defineProps({
@@ -7,15 +8,21 @@ import PokemonType from './PokemonType.vue';
         number: Number,
         abilities: Array,
         types: Array,
-        stats: Array
+        stats: Array,
+        allSprites: Array
     })
+
 </script>
 
 <template>
     <div class="card-details">
 
         <div class="pokemon-info">
-            <img :src="imageUrl" :alt="name" height="120">
+            <div class="carousel">
+                <!-- <button @click="prevImage" class="carousel-button prev">Anterior</button> -->
+                <img :src="imageUrl" :alt="name" height="120" class="carousel-image">
+                <!-- <button @click=" nextImage" class="carousel-button next">Próximo</button> -->
+            </div>
 
             <div class="detailed-info">
                 <span>Type:</span>
@@ -24,7 +31,8 @@ import PokemonType from './PokemonType.vue';
                 </div>
                 <div class="abilities">
                     <span>Abilities:</span>
-                    <p v-for="ability in abilities" :key="ability.name" :class=" {'hiddenAbility' : ability.isHidden} "> {{
+                    <p v-for="ability in abilities" :key="ability.name" :class=" {'hiddenAbility' : ability.isHidden} ">
+                        {{
                         ability.name }}</p>
                 </div>
             </div>
@@ -64,7 +72,7 @@ import PokemonType from './PokemonType.vue';
         position: relative;
     }
     .hiddenAbility::after {
-        content: 'Hidden';
+        content: url("data: image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0' %3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round' %3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier' %3E%3Cpath d='M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' %3E%3C/path%3E%3Cpath d='M21 12C19.1114 14.991 15.7183 18 12 18C8.2817 18 4.88856 14.991 3 12C5.29855 9.15825 7.99163 6 12 6C16.0084 6 18.7015 9.1582 21 12Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' %3E%3C/path%3E%3C/g%3E%3C/svg%3E");
         font-size: .7rem;
         position: absolute;
         top: 0%;
@@ -149,5 +157,24 @@ import PokemonType from './PokemonType.vue';
         max-width: 120px;
         max-height: 120px;
         object-fit: contain;
+    }
+    .carousel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-image {
+        max-width: 100%;
+        max-height: 200px;
+        /* Ajuste conforme necessário */
+    }
+
+    .carousel-button {
+        background-color: #f3f3f3;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin: 0 10px;
     }
 </style>
