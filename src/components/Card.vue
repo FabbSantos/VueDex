@@ -42,7 +42,7 @@
         }
 
         &:hover .card {
-            background-color: var(--black);
+            background-color: var(--orange-light);
         }
     }
 

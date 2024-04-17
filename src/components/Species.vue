@@ -1,6 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
+const props = defineProps({
+    fetchPokemonData: Function,
+    clearPokemonList: Function
+})
+
     const species = ref([]);
     let selectedSpecie = ref('');
 
@@ -18,6 +23,19 @@ import { onMounted, ref } from 'vue';
         }
     }
 
+    const searchSelectedPokemon = async () => {
+        if (!selectedSpecie.value) {
+            return;
+        }
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${selectedSpecie.value}`);
+        const data = await response.json();
+        const foundPokemon = data.varieties.map((variety) => variety.pokemon.url);
+        props.clearPokemonList();
+        foundPokemon.forEach(url => {
+            props.fetchPokemonData(() =>{} , () =>{}, url);
+        });
+    }
+
     onMounted( async () => {
         await fetchSpecies();
     });
@@ -25,10 +43,11 @@ import { onMounted, ref } from 'vue';
 </script>
 
 <template>
-    <input list="species" v-model="selectedSpecie" placeholder="enter a specie of a pokémon">
+    <input list="species" v-on:change="searchSelectedPokemon" v-model="selectedSpecie"
+        placeholder="enter a specie of a pokémon">
 
     <datalist id="species">
-        <option v-for="specie in species" :value="specie" :key="specie"/>
+        <option v-for="specie in species" :value="specie" :key="specie" />
     </datalist>
 
 </template>

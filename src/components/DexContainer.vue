@@ -26,6 +26,10 @@ const state = reactive({
     selectedCardIndex: null,
 });
 
+function clearPokemonList() {
+    state.pokemonData = [];
+    showPokeball.value = false;
+}
 // Função para lidar com o clique do card
 const handleCardClick = (pokemon, index) => {
     if (state.selectedCardIndex === index) {
@@ -196,10 +200,6 @@ function isValidSearch(input) {
     return isStringOrInt && isNotEmpty;
 }
 
-// Função para pesquisar um pokemon por espécie
-// const pokemonSearcBySpecie = async (specie) => {
-//     pokemonSearch = specie;
-// }
 </script>
 
 <template>
@@ -211,9 +211,10 @@ function isValidSearch(input) {
                     <input type="text" oninput="this.setCustomValidity(''); this.reportValidity()" class="search"
                         placeholder="enter a pokemon or an id" v-model="pokemonSearch">
 
-                    <!-- <Species
-                        :onSelect = "pokemonSearcBySpecie"
-                    /> -->
+                    <Species
+                        :fetchPokemonData = fetchPokemonData
+                        :clearPokemonList = clearPokemonList
+                    />
                 </form>
 
                 <button @click="loadAllPokemonButton">
