@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 
 const props = defineProps({
     fetchPokemonData: Function,
@@ -7,7 +7,9 @@ const props = defineProps({
 })
 
     const types = ref([]);
-    let selectedType = ref('');
+    let selectedSpecie = inject('selectedSpecie');
+    let selectedType = inject('selectedType');
+    let pokemonSearch = inject('pokemonSearch');
 
     const fetchTypes = async () => {
         const response = await fetch('https://pokeapi.co/api/v2/type');
@@ -31,6 +33,8 @@ const props = defineProps({
         const data = await response.json();
         const foundPokemon = data.pokemon.map((p) => p.pokemon.url);
         props.clearPokemonList();
+        selectedSpecie.value ='';
+        pokemonSearch.value ='';
         foundPokemon.forEach(url => {
             props.fetchPokemonData(() =>{} , () =>{}, url);
         });

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, provide, reactive, ref } from 'vue';
 import FunctionQueue from '../utils/FunctionQueue';
 
 import Card from './Card.vue';
@@ -10,8 +10,14 @@ import Types from './Types.vue';
 let functionQueue = new FunctionQueue();
 const limit = 10;
 let offset = (limit * -1);
-let pokemonSearch = '';
+let pokemonSearch = ref('');
 let showPokeball = ref(true);
+let selectedSpecie = ref('');
+let selectedType = ref('');
+
+provide('pokemonSearch', pokemonSearch);
+provide('selectedSpecie', selectedSpecie);
+provide('selectedType', selectedType);
 
 const loadPokemonData = async (resolve, reject) => {
     lastFunction.value = loadPokemonData;
@@ -26,6 +32,7 @@ const state = reactive({
     selectedPokemon: null,
     selectedCardIndex: null,
 });
+
 
 function clearPokemonList() {
     state.pokemonData = [];
@@ -49,6 +56,9 @@ const fetchPokemonData = async (resolve, reject, url) => {
 
         if (!response.ok) {
             lastFunction.value = null;
+            pokemonSearch.value = '';
+            state.pokemonData = [];
+            isSearching = false;
             resolve();
             return;
         }
@@ -129,7 +139,11 @@ const fetchPokemonData = async (resolve, reject, url) => {
 const loadAllPokemonButton = () => {
     state.selectedPokemon = null;
     state.selectedCardIndex = null;
-    pokemonSearch = '';
+
+    pokemonSearch.value = '';
+    selectedSpecie.value = '';
+    selectedType.value = '';
+
     offset = (limit * -1);
     state.pokemonData = [];
     lastFunction.value = loadPokemonData;
@@ -167,14 +181,14 @@ async function searchPokemonData(resolve, reject) {
     showPokeball.value = false;
     offset = (limit * -1);
 
-    fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon/${pokemonSearch.toLowerCase()}`);
+    fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon/${pokemonSearch.value.toLowerCase()}`);
 }
 
 // Função para submeter a pesquisa
 const submit = async () => {
     const clear = document.querySelector('.search');
 
-    if (!isValidSearch(pokemonSearch)) {
+    if (!isValidSearch(pokemonSearch.value)) {
         clear.setCustomValidity('Invalid search. Please enter a valid pokemon name or id.');
         clear.reportValidity();
         return;
@@ -182,9 +196,13 @@ const submit = async () => {
 
     isSearching = true;
     state.pokemonData = [];
+    selectedSpecie.value = '';
+    selectedType.value = '';
+
+   
 
     await new Promise((resolve, reject) => {
-        searchPokemonData(resolve, reject);
+            searchPokemonData(resolve, reject);
     })
     .then(() => {
         if (lastFunction.value) lastFunction.value = searchPokemonData;
@@ -206,23 +224,15 @@ function isValidSearch(input) {
 <template>
     <div class="content-container">
 
-        <div class="dex-container">
-            <div class="form-container">
-                <form action="" @submit.prevent="submit">
-                    <input type="text" oninput="this.setCustomValidity(''); this.reportValidity()" class="search"
-                        placeholder="enter a pokemon or an id" v-model="pokemonSearch">
+        <div class="form-container">
+            <form action="" @submit.prevent="submit">
+                <input @keyup.enter="submit" type="text" oninput="this.setCustomValidity('');
+                this.reportValidity()" class="search"
+                placeholder="enter a pokemon or an id" v-model="pokemonSearch"/>
 
-                    <Species
-                        :fetchPokemonData = fetchPokemonData
-                        :clearPokemonList = clearPokemonList
-                    />
-                    <Types
-                        :fetchPokemonData = fetchPokemonData
-                        :clearPokemonList = clearPokemonList
-                    />
-                </form>
-
-                <button @click="loadAllPokemonButton">
+                <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
+                <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
+                <div class="button" @click="loadAllPokemonButton">
                     <svg fill="#fff" height="20px" width="20px" version="1.1" id="Layer_1"
                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 482.827 482.827" xml:space="preserve" stroke="#fff">
@@ -238,8 +248,11 @@ function isValidSearch(input) {
                             </g>
                         </g>
                     </svg>
-                </button>
-            </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="dex-container">
 
             <div class="dex-innerContainer">
 
@@ -261,9 +274,9 @@ function isValidSearch(input) {
         <Transition>
             <ShowPokemonDetail :key="state.selectedPokemon.name" v-if="state.selectedPokemon"
                 :abilities=state.selectedPokemon.abilities :types=state.selectedPokemon.types
-                :number=state.selectedPokemon.number
-                :stats=state.selectedPokemon.stats :name="state.selectedPokemon.name"
-                :imageUrl="state.selectedPokemon.imageUrl" :allSprites=state.selectedPokemon.allSprites />
+                :number=state.selectedPokemon.number :stats=state.selectedPokemon.stats
+                :name="state.selectedPokemon.name" :imageUrl="state.selectedPokemon.imageUrl"
+                :allSprites=state.selectedPokemon.allSprites />
         </Transition>
 
 
@@ -278,24 +291,24 @@ function isValidSearch(input) {
     width: 100vw;
 }
 .dex-container {
-    height: 100%;
-    width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
+    overflow: hidden;
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
     background-color: var(--orange-base);
-    max-width: 100%;
-    clip-path: polygon(0 0, 62% 0, 98% 100%, 0% 100%);
+    clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
 }
 .dex-innerContainer {
     background-image: url('data:image/svg+xml, <svg class="pokeball" width="608" height="608" viewBox="0 0 608 608" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M260.875 392.013C276.039 431.968 255.942 476.652 215.987 491.816C176.032 506.981 131.348 486.884 116.184 446.928C101.019 406.973 121.116 362.289 161.072 347.125C201.027 331.961 245.711 352.058 260.875 392.013Z" fill="%231D1D1D" fill-opacity="0.2" /><path fill-rule="evenodd" clip-rule="evenodd" d="M303.852 723.322C456.926 665.225 540.603 503.968 505.778 348.724L327.816 416.267C329.136 473.629 294.653 528.173 237.953 549.693C181.254 571.212 119.265 553.283 82.1918 509.49L-95.7705 577.032C-18.8213 716.289 150.777 781.419 303.852 723.322ZM49.2426 422.675L-128.72 490.218C-163.544 334.973 -79.8677 173.716 73.2072 115.619C226.282 57.5219 395.88 122.652 472.829 261.909L294.867 329.452C257.794 285.659 195.805 267.729 139.106 289.249C82.4061 310.768 47.9232 365.312 49.2426 422.675ZM260.875 392.013C276.039 431.968 255.942 476.652 215.987 491.816C176.032 506.981 131.348 486.884 116.184 446.928C101.019 406.973 121.116 362.289 161.072 347.125C201.027 331.961 245.711 352.058 260.875 392.013Z" fill="%231D1D1D" fill-opacity="0.2" /></svg>');
     background-repeat: no-repeat;
     background-position: bottom left;
      
-    width: 100%;
     overflow-y: scroll;
     background-color: var(--orange-light);
-    height: 95%;
-    max-width: 90%;
-    clip-path: polygon(0 0, 62% 0, 100% 100%, 0% 100%);
+    height: 100%;
+    max-width: 95%;
+    clip-path: polygon(0 0, 73% 0, 100% 100%, 0% 100%);
     padding: 2rem;
 
 
@@ -310,14 +323,24 @@ function isValidSearch(input) {
 }
 
 .form-container {
-    display: flex;
-    justify-content: start;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 10;
+    background-color: var(--orange-base);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     padding: 1rem;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     gap: 1rem;
     
-    button {
+    div.button {
         margin-left: 1rem;
+        display: grid;
+        max-width: min-content;
+        place-items: center;
         background-color: transparent;
         cursor: pointer;
         border: none;
@@ -326,6 +349,16 @@ function isValidSearch(input) {
         }
     }
 }
+
+form {
+    display: grid;
+    grid-column: 1;
+    grid-template-columns: repeat(3, 1fr);
+}
+.form-container button {
+    grid-column: 2;
+}
+
 input {
     padding: .5rem;
     font-size: .8rem;

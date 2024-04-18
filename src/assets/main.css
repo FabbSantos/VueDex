@@ -2,17 +2,19 @@
 
 #app {
   margin: 0 auto;
-  padding: 2rem;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 }
 main {
   height: 100%;
   width: 100%;
 }
+body {
+  height: 100%;
+  width: 100%;
+}
 
-
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     overflow: hidden;
@@ -22,7 +24,6 @@ main {
   #app {
     display: grid;
     place-items: center;
-    padding: 0 2rem;
     padding-left: 0;
   }
-}
+} */
