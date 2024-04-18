@@ -17,6 +17,7 @@
         padding: 0.4rem 1.1rem;
         border-radius: 1.5rem;
         color: white;
+        border: 1px solid rgba(255, 255, 255, .3);
         font-weight: 500;
         letter-spacing: 1px;
         font-size: 0.8rem;

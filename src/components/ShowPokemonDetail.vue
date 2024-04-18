@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import PokemonType from './PokemonType.vue';
+import PokemonAbilities from './PokemonAbilities.vue';
+import PokemonSprites from './PokemonSprites.vue';
+import PokemonStats from './PokemonStats.vue';
 
     const props = defineProps({
         name: String,
@@ -18,42 +21,25 @@ import PokemonType from './PokemonType.vue';
     <div class="card-details">
 
         <div class="pokemon-info">
-            <div class="carousel">
-                <!-- <button @click="prevImage" class="carousel-button prev">Anterior</button> -->
-                <img :src="imageUrl" :alt="name" height="120" class="carousel-image">
-                <!-- <button @click=" nextImage" class="carousel-button next">Próximo</button> -->
-            </div>
+            <img :src="imageUrl" :alt="name" height="120" class="carousel-image">
+            
+            <div :class="['detailed-info', types.length===1  ? `type-${types[0]}` : '']"
+                :style="types.length > 1 ? `background: linear-gradient(60deg, var(--${types[0]}), var(--${types[1]})` : ''"
+            >
 
-            <div class="detailed-info">
-                <span>Type:</span>
+                <p class="dex"> #{{ number }}</p>
                 <div class="types">
+                    <span>Type:</span>
                     <PokemonType :types="types" />
                 </div>
-                <div class="abilities">
-                    <span>Abilities:</span>
-                    <p v-for="ability in abilities" :key="ability.name" :class=" {'hiddenAbility' : ability.isHidden} ">
-                        {{
-                        ability.name }}</p>
-                </div>
+                <PokemonAbilities :abilities="abilities" />
+
+                <PokemonSprites :allSprites="allSprites"/>
+                <PokemonStats :stats="stats" :types="types"/>
             </div>
         </div>
+    </div>
 
-
-        <div>
-            <div class="stats">
-                <div v-for="stat in stats" key="stat" class="stat">
-                    {{ stat.name }}
-                    <div class="progress-bar">
-                        <div class="progress" :class="`type-${types[0]}`"
-                            :style="{ width: `${stat.base_stat / 255 * 100}%` }" </div>
-                        </div>
-                        <span class="total_per_stat">
-                            {{ stat.base_stat }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 </template>
 
@@ -68,17 +54,13 @@ import PokemonType from './PokemonType.vue';
         width: 100%;
         height: 100%;
     }
-    .hiddenAbility {
-        position: relative;
-    }
-    .hiddenAbility::after {
-        content: url("data: image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0' %3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round' %3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier' %3E%3Cpath d='M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' %3E%3C/path%3E%3Cpath d='M21 12C19.1114 14.991 15.7183 18 12 18C8.2817 18 4.88856 14.991 3 12C5.29855 9.15825 7.99163 6 12 6C16.0084 6 18.7015 9.1582 21 12Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' %3E%3C/path%3E%3C/g%3E%3C/svg%3E");
-        font-size: .7rem;
-        position: absolute;
-        top: 0%;
-        margin-left: 5%;
-        text-transform: lowercase;
-        font-weight: 300;
+    .dex {
+        font-weight: 600;
+        border-bottom: 1px solid;
+        width: 100%;
+        text-align: center;
+        font-style: italic;
+        font-size: clamp(1.5rem, 2vw, 2rem);
     }
     .pokemon-info {
         display: flex;
@@ -90,13 +72,15 @@ import PokemonType from './PokemonType.vue';
         .detailed-info {
             display: flex;
             flex-direction: column;
+            max-width: 30vw;
             gap: 1rem;
-            padding: 1rem;
+            padding: 3rem 1.5rem 3rem 1.5rem;
             border-radius: 9px;
             justify-content: start;
-            align-items: start;
-            background-color: aquamarine;
-        
+            /* align-items: ; */
+            span {
+                font-weight: 700;
+            }
         }
     }
     .types {
@@ -104,6 +88,7 @@ import PokemonType from './PokemonType.vue';
         gap: 1rem;
         flex-direction: row;
         justify-content: start;
+        align-items: center;
         span {
             font-weight: 700;
         }
@@ -125,16 +110,7 @@ import PokemonType from './PokemonType.vue';
         text-align: right;
         font-size: 0.8rem;
     }
-    .abilities {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        justify-content: start;
-        align-items: start; 
-    }
-    .abilities span {
-        font-weight: 700;
-    }
+    
     .progress-bar {
         width: 100%;
         background-color: #f3f3f3;
