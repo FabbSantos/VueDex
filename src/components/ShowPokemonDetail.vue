@@ -1,9 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue';
 import PokemonType from './PokemonType.vue';
 import PokemonAbilities from './PokemonAbilities.vue';
 import PokemonSprites from './PokemonSprites.vue';
 import PokemonStats from './PokemonStats.vue';
+import Learnset from './Learnset.vue';
+import PokemonName from './PokemonName.vue';
+import { ref } from 'vue';
 
     const props = defineProps({
         name: String,
@@ -12,8 +14,16 @@ import PokemonStats from './PokemonStats.vue';
         abilities: Array,
         types: Array,
         stats: Array,
-        allSprites: Array
+        allSprites: Array,
+        gameIndices: Array,
+        selectedPokemon: Object
     })
+
+const pTypes = ref([]);
+
+const setTypes = (t1) => {
+    pTypes.value.push(t1);
+}
 
 </script>
 
@@ -21,21 +31,25 @@ import PokemonStats from './PokemonStats.vue';
     <div class="card-details">
 
         <div class="pokemon-info">
-            <img :src="imageUrl" :alt="name" height="120" class="carousel-image">
-            
-            <div :class="['detailed-info', types.length===1  ? `type-${types[0]}` : '']"
-                :style="types.length > 1 ? `background: linear-gradient(60deg, var(--${types[0]}), var(--${types[1]})` : ''"
+            <div :class="['detailed-info', pTypes.length===1  ? `type-${pTypes[0]}` : '']"
+            :style="pTypes.length > 1 ? `background: linear-gradient(60deg, var(--${pTypes[0]}), var(--${pTypes[1]})` : ''"
             >
-
-                <p class="dex"> #{{ number }}</p>
-                <div class="types">
-                    <span>Type:</span>
-                    <PokemonType :types="types" />
+                <div class="deximg">
+                    <img :src="imageUrl" :alt="name" height="120">
+                    <PokemonName :pokemonName="selectedPokemon.name"/>
+                    <p class="dex"> #{{ number }}</p>
                 </div>
-                <PokemonAbilities :abilities="abilities" />
-
-                <PokemonSprites :allSprites="allSprites"/>
-                <PokemonStats :stats="stats" :types="types"/>
+            
+                <div class="overflow">
+                    <div class="types">
+                        <span>Type:</span>
+                        <PokemonType :types="types" :setTypes="setTypes"/>
+                    </div>
+                    <PokemonAbilities :abilities="abilities" />
+                    <PokemonSprites :allSprites="allSprites"/>
+                    <Learnset :moves="selectedPokemon.pokemon.moves"/>
+                    <PokemonStats :stats="stats" :types="pTypes"/>
+                </div>
             </div>
         </div>
     </div>
@@ -54,18 +68,30 @@ import PokemonStats from './PokemonStats.vue';
         width: 100%;
         height: 100%;
     }
-    .dex {
-        font-weight: 600;
-        border-bottom: 1px solid;
-        width: 100%;
+    .dex, .name {
+        font-weight: 400;
         text-align: center;
         font-style: italic;
         font-size: clamp(1.5rem, 2vw, 2rem);
+    }
+    .deximg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid;
+
+        p{
+            margin-inline: 10px;
+        }
+    }
+    .overflow {
+        overflow-y: auto;
     }
     .pokemon-info {
         display: flex;
         flex-direction: row;
         gap: 1.2rem;
+        max-height: 100vh;
         justify-content: center;
         align-items: center;
         
@@ -73,6 +99,8 @@ import PokemonStats from './PokemonStats.vue';
             display: flex;
             flex-direction: column;
             max-width: 30vw;
+            max-height: 100%;
+            overflow-y: hidden;
             gap: 1rem;
             padding: 3rem 1.5rem 3rem 1.5rem;
             border-radius: 9px;

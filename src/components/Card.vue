@@ -8,8 +8,13 @@
         types: Array,
         index: Number, 
         stats: Array,
-        allSprites: Array
+        allSprites: Array,
+        learnset: Array,
+        gameIndices: Array,
+        pokemon: Object
     })
+
+    import PokemonName from './PokemonName.vue';
     const emit = defineEmits(['card-click']);
     const emitCardClick = () => {
         emit('card-click', props, props.index);
@@ -21,7 +26,7 @@
         <div class="card">
             <img :src="imageUrl" alt="Pokemon" height="50">
             <span>#{{number}}</span>
-            <h2>{{name}}</h2>
+            <PokemonName :pokemonName ="pokemon.name" />
         </div>
     </div>
 </template>

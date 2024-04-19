@@ -14,10 +14,12 @@ let pokemonSearch = ref('');
 let showPokeball = ref(true);
 let selectedSpecie = ref('');
 let selectedType = ref('');
+let language = ref('ko');
 
 provide('pokemonSearch', pokemonSearch);
 provide('selectedSpecie', selectedSpecie);
 provide('selectedType', selectedType);
+provide('language', language);
 
 const loadPokemonData = async (resolve, reject) => {
     lastFunction.value = loadPokemonData;
@@ -84,6 +86,10 @@ const fetchPokemonData = async (resolve, reject, url) => {
             let types = [];
             let stats = [];
             let allSprites = [];
+            let gameIndices = [];
+
+
+            gameIndices.push(...pokemonUrlData.game_indices.map(g => g.version.name));
 
 
             const validSprites = Object.entries(pokemonUrlData.sprites)
@@ -94,11 +100,11 @@ const fetchPokemonData = async (resolve, reject, url) => {
 
             allSprites.push(...flatSprites);
 
-            types.push(...pokemonUrlData.types.map(t => t.type.name));
+            types.push(...pokemonUrlData.types.map(t => t.type.url));
             
             abilities.push(...pokemonUrlData.abilities.map(a => ({
-                name: a.ability.name,
-                isHidden: a.is_hidden
+                ability: a.ability.url,
+                is_hidden: a.is_hidden
             })));
 
             stats.push(...pokemonUrlData.stats.map(s => ({
@@ -116,11 +122,13 @@ const fetchPokemonData = async (resolve, reject, url) => {
                 name: data.results[i].name,
                 url: data.results[i].url,
                 id: pokemonUrlData.id,
+                moves: pokemonUrlData.moves.map(m=>m.move.url),
                 cardImageUrl: cardImageUrl,
                 abilities: abilities,
                 types: types,
                 stats: stats,
-                sprites: allSprites
+                sprites: allSprites,
+                gameIndices: gameIndices
             });
         }
         showPokeball.value = length === limit;
@@ -227,8 +235,7 @@ function isValidSearch(input) {
         <div class="form-container">
             <form action="" @submit.prevent="submit">
                 <input @keyup.enter="submit" type="text" oninput="this.setCustomValidity('');
-                this.reportValidity()" class="search"
-                placeholder="enter a pokemon or an id" v-model="pokemonSearch"/>
+                this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch" />
 
                 <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
                 <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
@@ -257,9 +264,11 @@ function isValidSearch(input) {
             <div class="dex-innerContainer">
 
                 <p v-if="!state.pokemonData.length &&  !isSearching">No pokémon found...</p>
+
                 <Card v-for="(pokemon, index) in state.pokemonData" :key="index" :name="pokemon.name"
                     :imageUrl=pokemon.cardImageUrl :number="pokemon.id" :abilities=pokemon.abilities
-                    :types=pokemon.types :stats=pokemon.stats :index="index" :allSprites=pokemon.sprites
+                    :types=pokemon.types :stats=pokemon.stats :index="index" :pokemon=pokemon
+                    :gameIndices="pokemon.gameIndices" :allSprites=pokemon.sprites
                     :class="{ 'selected-card': index === state.selectedCardIndex }" @card-click="handleCardClick" />
 
 
@@ -276,7 +285,9 @@ function isValidSearch(input) {
                 :abilities=state.selectedPokemon.abilities :types=state.selectedPokemon.types
                 :number=state.selectedPokemon.number :stats=state.selectedPokemon.stats
                 :name="state.selectedPokemon.name" :imageUrl="state.selectedPokemon.imageUrl"
-                :allSprites=state.selectedPokemon.allSprites />
+                :gameIndices="state.selectedPokemon.gameIndices"
+                :allSprites=state.selectedPokemon.allSprites 
+                :selectedPokemon = "state.selectedPokemon" />
         </Transition>
 
 
@@ -289,6 +300,7 @@ function isValidSearch(input) {
     grid-template-columns: 1fr 1fr;
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
 }
 .dex-container {
     max-height: 100%;

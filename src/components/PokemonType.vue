@@ -1,15 +1,48 @@
 <script setup>
-
+import { ref, onMounted, inject } from 'vue'
     const props = defineProps({
-        types: Array
+        types: Array,
+        setTypes: Function
+    })
+
+    const language = inject('language');
+    let names = ref([]);
+    let typesTranslated = ref([]);
+    let englishName = ref([]);
+
+
+
+    const fetchTypes = async () => {
+        props.types.forEach(t => {
+            fetch(t)
+                .then(response => response.json())
+                .then(data => {
+                    const englishNameData = data.names.filter((name) => name.language.name === 'en');
+                    englishName.value = englishNameData[0].name.toLowerCase();
+                    props.setTypes(englishName.value);
+                    const dataName = data.names.filter((name) => name.language.name === language.value);
+                    typesTranslated.value.push(dataName[0].name.toLowerCase());
+
+                    names.value.push({
+                        name: typesTranslated.value,
+                        english: englishName.value
+                    })
+                });
+        });
+    }
+
+    onMounted(() => {
+        fetchTypes();
     })
 </script>
 
 <template>
-    <span class="type" v-for="type in types" :key="type"
-        :class="{ 'type-grass': type === 'grass', 'type-fire': type === 'fire', 'type-water': type === 'water', 'type-normal': type === 'normal', 'type-electric': type === 'electric', 'type-ice': type === 'ice', 'type-fighting': type === 'fighting', 'type-poison': type === 'poison', 'type-ground': type === 'ground', 'type-flying': type === 'flying', 'type-psychic': type === 'psychic', 'type-bug': type === 'bug', 'type-rock': type === 'rock', 'type-ghost': type === 'ghost', 'type-dragon': type === 'dragon', 'type-dark': type === 'dark', 'type-steel': type === 'steel', 'type-fairy': type === 'fairy' }">
-        {{ type }}
-    </span>
+    <div class="types">
+        <div class="type" v-for="(name, index) in names" :key="index"
+            :class="['type', `type-${names[index].english}`]">
+            {{ name.name[index] }}
+        </div>
+    </div>
 </template>
 
 <style>

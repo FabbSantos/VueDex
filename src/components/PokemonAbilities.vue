@@ -1,18 +1,38 @@
 <script setup> 
-import { defineProps } from 'vue'
+import { defineProps, inject, ref, onMounted } from 'vue'
     const props = defineProps({
         abilities: Array
     })
+    let abilitiesTranslated = ref([]);
+    const language = inject('language');
+
+    const fetchAbilities = async () => {
+        props.abilities.forEach(a => {
+            fetch(a.ability)
+                .then(response => response.json())
+                .then(data => {
+                    const dataName = data.names.filter((name) => name.language.name === language.value);
+                    abilitiesTranslated.value.push({
+                        name: dataName[0].name,
+                        isHidden: a.is_hidden
+                    })
+            });
+        });
+    }
+
+onMounted(() => {
+    fetchAbilities();
+})
 </script>
 
 <template>
     <div class="abilities">
-        <span>Abilities:</span> 
-
-        <div>
-            <p v-for="ability in abilities" :key="ability.name" :class="{ 'hiddenAbility': ability.isHidden }">
-                {{
-                    ability.name }}</p>
+        <span>Abilities:</span>
+        <div class="ab-names">
+            <p v-for="(ability, index) in abilitiesTranslated" :key="index"
+                :class="{ 'hiddenAbility': ability.isHidden }">
+                {{index > 0 ? '/' : '' }} {{ ability.name }}
+            </p>
         </div>
     </div>
 </template>
@@ -22,6 +42,7 @@ import { defineProps } from 'vue'
         display: flex;
         flex-direction: row;
         gap: 1rem;
+        margin-block: .8rem;
         justify-content: start;
         align-items: center;
     }
@@ -31,6 +52,18 @@ import { defineProps } from 'vue'
     }
     .hiddenAbility {
         position: relative;
+    }
+    .ab-names {
+        display: flex;
+        flex-direction: row;
+        gap: .5rem;
+        justify-content: start;
+        align-items: center;
+        p {
+            font-size: .9rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
     }
 
     .hiddenAbility::after {
