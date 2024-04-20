@@ -6,6 +6,7 @@ import Card from './Card.vue';
 import ShowPokemonDetail from './ShowPokemonDetail.vue';
 import Species from './Species.vue';
 import Types from './Types.vue';
+import Flags from './Flags.vue';
 
 let functionQueue = new FunctionQueue();
 const limit = 10;
@@ -14,7 +15,7 @@ let pokemonSearch = ref('');
 let showPokeball = ref(true);
 let selectedSpecie = ref('');
 let selectedType = ref('');
-let language = ref('es');
+let language = ref('en');
 const fallbackLanguage = 'en';
 
 provide('pokemonSearch', pokemonSearch);
@@ -260,6 +261,7 @@ function isValidSearch(input) {
                 <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
             </form>
 
+            <Flags/>
         </div>
         <div class="dex-container">
 

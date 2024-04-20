@@ -6,6 +6,8 @@ import { ref, onMounted, inject } from 'vue'
     })
 
     const language = inject('language');
+    const fallbackLanguage = inject('fallbackLanguage');
+
     let names = ref([]);
     let typesTranslated = ref([]);
     let englishName = ref([]);
@@ -20,7 +22,9 @@ import { ref, onMounted, inject } from 'vue'
                     const englishNameData = data.names.filter((name) => name.language.name === 'en');
                     englishName.value = englishNameData[0].name.toLowerCase();
                     props.setTypes(englishName.value);
-                    const dataName = data.names.filter((name) => name.language.name === language.value);
+                    const dataName = data.names.filter((name) => name.language.name === language.value)
+                                                        .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
+
                     typesTranslated.value.push(dataName[0].name.toLowerCase());
 
                     names.value.push({

@@ -5,13 +5,16 @@ import { defineProps, inject, ref, onMounted } from 'vue'
     })
     let abilitiesTranslated = ref([]);
     const language = inject('language');
+    const fallbackLanguage = inject('fallbackLanguage');
+
 
     const fetchAbilities = async () => {
         props.abilities.forEach(a => {
             fetch(a.ability)
                 .then(response => response.json())
                 .then(data => {
-                    const dataName = data.names.filter((name) => name.language.name === language.value);
+                    const dataName = data.names.filter((name) => name.language.name === language.value)
+                        .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
                     abilitiesTranslated.value.push({
                         name: dataName[0].name,
                         isHidden: a.is_hidden
@@ -31,7 +34,7 @@ onMounted(() => {
         <div class="ab-names">
             <p v-for="(ability, index) in abilitiesTranslated" :key="index"
                 :class="{ 'hiddenAbility': ability.isHidden }">
-                {{index > 0 ? '/' : '' }} {{ ability.name }}
+                {{index > 0 ? ' /' : '' }} {{ ability.name }}
             </p>
         </div>
     </div>
@@ -62,6 +65,7 @@ onMounted(() => {
         align-items: center;
         p {
             font-size: .9rem;
+            margin-left: 10px;
             font-weight: 500;
             text-transform: capitalize;
         }

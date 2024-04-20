@@ -6,13 +6,16 @@ const props = defineProps({
     pokemonName: String
 })
 const language = inject('language');
+const fallbackLanguage = inject('fallbackLanguage');
+
 let name = ref('');
 
 const fetchPokemonName = async () => {
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.pokemonName}`);
         const data = await response.json();
-        const pokemonName = data.names.filter((name) => name.language.name === language.value);
+        const pokemonName = data.names.filter((name) => name.language.name === language.value)
+            .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
         name.value = pokemonName[0].name;
     }
     catch (error) {
