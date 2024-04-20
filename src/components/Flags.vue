@@ -1,5 +1,9 @@
 <script setup>
 
+const props = defineProps({
+    loadAllPokemonButton: Function
+})
+
 import { inject } from 'vue';
 
 let language = inject('language');
@@ -8,8 +12,9 @@ let language = inject('language');
 
 <template>
 
-    <div class ="flags">
-        <svg @click="language ='pt-br' " xmlns="http://www.w3.org/2000/svg" id="flag-br" viewBox="0 0 640 480">
+    <div class="flags">
+        <svg @click="language ='pt-br'; loadAllPokemonButton() " xmlns="http://www.w3.org/2000/svg" id="flag-br"
+            viewBox="0 0 640 480">
             <g stroke-width="1pt">
                 <path fill="#229e45" fill-rule="evenodd" d="M0 0h640v480H0z" />
                 <path fill="#f8e509" fill-rule="evenodd" d="m321.4 436 301.5-195.7L319.6 44 17.1 240.7z" />
@@ -77,7 +82,9 @@ let language = inject('language');
                     d="m301.8 204.5 2.3-9.8 7.2 1.7-.3 1.6-5.3-1.2-.5 2.2 4.9 1.1-.4 1.7-4.9-1.2-.6 2.7 5.5 1.3-.4 1.6z" />
             </g>
         </svg>
-        <svg @click="language ='en' " xmlns=" http://www.w3.org/2000/svg" id="flag-us" viewBox="0 0 640 480">
+
+        <svg @click="language ='en'; loadAllPokemonButton() " xmlns=" http://www.w3.org/2000/svg" id="flag-us"
+            viewBox="0 0 640 480">
             <path fill="#bd3d44" d="M0 0h640v480H0" />
             <path stroke="#fff" stroke-width="37" d="M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640" />
             <path fill="#192f5d" d="M0 0h364.8v258.5H0" />
@@ -87,7 +94,9 @@ let language = inject('language');
             <path fill="none" marker-mid="url(#us-a)"
                 d="m0 0 16 11h61 61 61 61 60L47 37h61 61 60 61L16 63h61 61 61 61 60L47 89h61 61 60 61L16 115h61 61 61 61 60L47 141h61 61 60 61L16 166h61 61 61 61 60L47 192h61 61 60 61L16 218h61 61 61 61 60z" />
         </svg>
-        <svg @click="language = 'es' " xmlns="http://www.w3.org/2000/svg" id="flag-es" viewBox="0 0 640 480">
+
+        <svg @click="language = 'es'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg" id="flag-es"
+            viewBox="0 0 640 480">
             <path fill="#AA151B" d="M0 0h640v480H0z" />
             <path fill="#F1BF00" d="M0 120h640v240H0z" />
             <path fill="#ad1519"
@@ -202,7 +211,8 @@ let language = inject('language');
             <path fill="#c8b100" d="M139.1 210.9c0-.3.3-.5.5-.5a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.4.5.5 0 0 1-.5-.4" />
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="M139.1 210.9c0-.3.3-.5.5-.5a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.4.5.5 0 0 1-.5-.4z" />
-            <path fill="#c8b100" d="m124.8 212.2-.6-.7c-.2-.2-.7-.3-.7-.3 0-.1.3-.3.6-.3a.5.5 0 0 1 .4.2v-.2s.3 0 .4.3v1" />
+            <path fill="#c8b100"
+                d="m124.8 212.2-.6-.7c-.2-.2-.7-.3-.7-.3 0-.1.3-.3.6-.3a.5.5 0 0 1 .4.2v-.2s.3 0 .4.3v1" />
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="m124.8 212.2-.6-.7c-.2-.2-.7-.3-.7-.3 0-.1.3-.3.6-.3a.5.5 0 0 1 .4.2v-.2s.3 0 .4.3v1z" />
             <path fill="#c8b100" d="M124.8 212c.1-.2.4-.2.5 0 .2.1.3.3.2.5l-.5-.1c-.2-.1-.3-.4-.2-.5" />
@@ -283,7 +293,8 @@ let language = inject('language');
                 d="M277.9 211.6s-.7.8-1.3.9c-.5 0-1.1-.5-1.1-.5s-.5.5-1 .6c-.6.1-1.4-.6-1.4-.6l-1 1c-.6 0-1.1-.3-1.1-.3s-.3.4-.7.6h-.4l-.6-.4-.7-.7-.5-.3-.4-1v-.5c-.1-.6.8-1.4 2.2-1.7a3.9 3.9 0 0 1 2 0c.5-.5 1.7-.8 3-.8s2.4.3 3 .7a5.5 5.5 0 0 1 2.9-.7c1.3 0 2.5.3 3 .8.5-.2 1.2-.2 2 0 1.4.3 2.3 1 2.2 1.7v.5l-.4 1-.6.3-.6.7-.6.3s-.3.2-.4 0c-.4-.1-.7-.5-.7-.5s-.6.4-1 .2c-.5-.2-1-1-1-1s-.9.8-1.4.7c-.6-.1-1-.6-1-.6s-.7.6-1.2.5c-.5-.1-1.2-.9-1.2-.9" />
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="M277.9 211.6s-.7.8-1.3.9c-.5 0-1.1-.5-1.1-.5s-.5.5-1 .6c-.6.1-1.4-.6-1.4-.6l-1 1c-.6 0-1.1-.3-1.1-.3s-.3.4-.7.6h-.4l-.6-.4-.7-.7-.5-.3-.4-1v-.5c-.1-.6.8-1.4 2.2-1.7a3.9 3.9 0 0 1 2 0c.5-.5 1.7-.8 3-.8s2.4.3 3 .7a5.5 5.5 0 0 1 2.9-.7c1.3 0 2.5.3 3 .8.5-.2 1.2-.2 2 0 1.4.3 2.3 1 2.2 1.7v.5l-.4 1-.6.3-.6.7-.6.3s-.3.2-.4 0c-.4-.1-.7-.5-.7-.5s-.6.4-1 .2c-.5-.2-1-1-1-1s-.9.8-1.4.7c-.6-.1-1-.6-1-.6s-.7.6-1.2.5c-.5-.1-1.2-.9-1.2-.9z" />
-            <path fill="#c8b100" d="M276.5 207.6c0-1 .6-2 1.3-2 .8 0 1.3 1 1.3 2s-.5 1.8-1.3 1.8c-.7 0-1.3-.8-1.3-1.9" />
+            <path fill="#c8b100"
+                d="M276.5 207.6c0-1 .6-2 1.3-2 .8 0 1.3 1 1.3 2s-.5 1.8-1.3 1.8c-.7 0-1.3-.8-1.3-1.9" />
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="M276.5 207.6c0-1 .6-2 1.3-2 .8 0 1.3 1 1.3 2s-.5 1.8-1.3 1.8c-.7 0-1.3-.8-1.3-1.9z" />
             <path fill="#c8b100" d="M277.3 207.6c0-1 .2-1.8.5-1.8.4 0 .7.8.7 1.8s-.3 1.7-.6 1.7c-.4 0-.6-.8-.6-1.8" />
@@ -352,7 +363,8 @@ let language = inject('language');
             <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width=".3"
                 d="M277.8 217.1a25 25 0 0 1-6-.6 25.4 25.4 0 0 1 6-.7c2.4 0 4.5.3 6.1.7-1.6.4-3.7.6-6 .6z" />
             <path fill="#c8b100" d="m285.2 212-.1-.3c-.2 0-.3 0-.4.2l.1.4c.2 0 .3 0 .4-.3" />
-            <path fill="none" stroke="#000" stroke-width=".3" d="m285.2 212-.1-.3c-.2 0-.3 0-.4.2l.1.4c.2 0 .3 0 .4-.3z" />
+            <path fill="none" stroke="#000" stroke-width=".3"
+                d="m285.2 212-.1-.3c-.2 0-.3 0-.4.2l.1.4c.2 0 .3 0 .4-.3z" />
             <path fill="#c8b100" d="M280.6 211.2c0-.2-.1-.4-.3-.4 0 0-.2.1-.2.3 0 .2 0 .4.2.4z" />
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="M280.6 211.2c0-.2-.1-.4-.3-.4 0 0-.2.1-.2.3 0 .2 0 .4.2.4z" />
@@ -360,7 +372,8 @@ let language = inject('language');
             <path fill="none" stroke="#000" stroke-width=".3"
                 d="M275.2 211.2c0-.2 0-.4.2-.4l.3.3-.2.4c-.2 0-.3-.2-.3-.3z" />
             <path fill="#c8b100" d="m270.5 212 .1-.3c.2 0 .3 0 .4.2l-.1.4c-.2 0-.3 0-.4-.3" />
-            <path fill="none" stroke="#000" stroke-width=".3" d="m270.5 212 .1-.3c.2 0 .3 0 .4.2l-.1.4c-.2 0-.3 0-.4-.3z" />
+            <path fill="none" stroke="#000" stroke-width=".3"
+                d="m270.5 212 .1-.3c.2 0 .3 0 .4.2l-.1.4c-.2 0-.3 0-.4-.3z" />
             <path fill="#c8b100" d="m277.8 208.5-.8.5.6 1.3.2.1.3-.1.6-1.3z" />
             <path fill="none" stroke="#000" stroke-width=".3" d="m277.8 208.5-.8.5.6 1.3.2.1.3-.1.6-1.3-.9-.5" />
             <path fill="#c8b100" d="m276 210.5.4.5 1.3-.4.1-.2-.1-.2-1.3-.3z" />
@@ -592,11 +605,13 @@ let language = inject('language');
             <path fill="#c8b100" stroke="#000" stroke-width=".5" d="M168.6 320.9c1.5.8 3.6 2 5.8 2.6l-.1-54.7h-5.7z" />
             <path fill="#c8b100" stroke="#000" stroke-linejoin="round" stroke-width=".5"
                 d="M158 301.6a24.4 24.4 0 0 0 5.5 15v-47.5h-5.4z" />
-            <path fill="#c7b500" stroke="#000" stroke-width=".5" d="M179.4 324.7a26.6 26.6 0 0 0 5.6 0v-55.9h-5.6v56z" />
+            <path fill="#c7b500" stroke="#000" stroke-width=".5"
+                d="M179.4 324.7a26.6 26.6 0 0 0 5.6 0v-55.9h-5.6v56z" />
             <path fill="#c8b100" stroke="#000" stroke-width=".5" d="M190 323.5a19 19 0 0 0 5.8-2.5v-52.2H190z" />
             <path fill="#ad1519" d="M158.1 270h48.2v-53.5H158z" />
             <path fill="none" stroke="#000" stroke-width=".5" d="M158.1 270h48.2v-53.5H158z" />
-            <path fill="#c8b100" stroke="#000" stroke-width=".5" d="M201 316c2.4-2 4.6-6.8 5.4-12.2l.1-35H201l.1 47.3z" />
+            <path fill="#c8b100" stroke="#000" stroke-width=".5"
+                d="M201 316c2.4-2 4.6-6.8 5.4-12.2l.1-35H201l.1 47.3z" />
             <path fill="none" stroke="#000" stroke-width=".5"
                 d="M206.3 302c0 12.6-10.7 22.9-24 22.9s-24.2-10.3-24.2-23v-32h48.2v32" />
             <path fill="#ad1519" d="M254.6 270v32c0 12.6-10.8 22.9-24.1 22.9s-24.2-10.3-24.2-23v-32h48.3" />
@@ -626,7 +641,8 @@ let language = inject('language');
             <path fill="none" stroke="#000" stroke-width=".1"
                 d="M232 225.4v-.4s.7 0 1 .3c.5.4.9 1 .9 1l-.8-.4h-.5l-.3-.1v-.3z" />
             <path fill="none" stroke="#000" stroke-width=".3" d="m237.3 231.3-.4-.7a8 8 0 0 1-.3-.4" />
-            <path fill="#db4446" d="M217.4 226.6s.5.4.8.4h.8s.2-.5.1-.8c-.2-1.2-1.2-1.4-1.2-1.4s.3.7.1 1a2 2 0 0 1-.6.8" />
+            <path fill="#db4446"
+                d="M217.4 226.6s.5.4.8.4h.8s.2-.5.1-.8c-.2-1.2-1.2-1.4-1.2-1.4s.3.7.1 1a2 2 0 0 1-.6.8" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M217.4 226.6s.5.4.8.4h.8s.2-.5.1-.8c-.2-1.2-1.2-1.4-1.2-1.4s.3.7.1 1a2 2 0 0 1-.6.8z" />
             <path fill="#db4446"
@@ -649,7 +665,8 @@ let language = inject('language');
             <path fill="#db4446" d="M216.6 240.4s-.4-.5-1.1-.3c-.7 0-1.2.9-1.2.9s.6-.2 1-.1.6.4.6.4l.4-.4z" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M216.6 240.4s-.4-.5-1.1-.3c-.7 0-1.2.9-1.2.9s.6-.2 1-.1.6.4.6.4l.4-.4z" />
-            <path fill="#db4446" d="M215.8 243.2s-.6 0-1.1.3c-.5.4-.5 1.2-.5 1.2s.4-.4.8-.3l.9.2v-.6c.2-.4-.1-.8-.1-.8" />
+            <path fill="#db4446"
+                d="M215.8 243.2s-.6 0-1.1.3c-.5.4-.5 1.2-.5 1.2s.4-.4.8-.3l.9.2v-.6c.2-.4-.1-.8-.1-.8" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M215.8 243.2s-.6 0-1.1.3c-.5.4-.5 1.2-.5 1.2s.4-.4.8-.3l.9.2v-.6c.2-.4-.1-.8-.1-.8z" />
             <path fill="#db4446" d="M217.2 245.8s0 .8.3 1.3c.4.5 1.1.5 1.1.5l-.3-.7c0-.4.3-.8.3-.8s-.3-.3-.7-.3z" />
@@ -658,7 +675,8 @@ let language = inject('language');
             <path fill="#db4446" d="M224.2 252.6s-.4-.6-1.1-.6c-.7 0-1.4.7-1.4.7s.8-.1 1 .2l.5.6.5-.3z" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M224.2 252.6s-.4-.6-1.1-.6c-.7 0-1.4.7-1.4.7s.8-.1 1 .2l.5.6.5-.3z" />
-            <path fill="#db4446" d="M222.2 255.3s-1-.1-1.4.3c-.4.5-.4 1.3-.4 1.3s.6-.6 1-.5c.5 0 1 .3 1 .3v-.7l-.3-.7" />
+            <path fill="#db4446"
+                d="M222.2 255.3s-1-.1-1.4.3c-.4.5-.4 1.3-.4 1.3s.6-.6 1-.5c.5 0 1 .3 1 .3v-.7l-.3-.7" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M222.2 255.3s-1-.1-1.4.3c-.4.5-.4 1.3-.4 1.3s.6-.6 1-.5c.5 0 1 .3 1 .3v-.7l-.3-.7z" />
             <path fill="#db4446" d="M224 258.1s-.3.7 0 1.1c.3.5 1 .8 1 .8s-.3-.4-.2-.8c.1-.3.7-.8.7-.8l-1.4-.2" />
@@ -774,9 +792,11 @@ let language = inject('language');
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M163.5 170.3c0-.6.4-1 1-1s1 .4 1 1-.4 1-1 1a1 1 0 0 1-1-1z" />
             <path fill="#fff" d="M166.6 169.1c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1" />
-            <path fill="none" stroke="#000" stroke-width=".4" d="M166.6 169.1c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1z" />
+            <path fill="none" stroke="#000" stroke-width=".4"
+                d="M166.6 169.1c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1z" />
             <path fill="#fff" d="M170 168.5c0-.5.5-1 1.1-1a1 1 0 0 1 0 2c-.6 0-1-.4-1-1" />
-            <path fill="none" stroke="#000" stroke-width=".4" d="M170 168.5c0-.5.5-1 1.1-1a1 1 0 0 1 0 2c-.6 0-1-.4-1-1z" />
+            <path fill="none" stroke="#000" stroke-width=".4"
+                d="M170 168.5c0-.5.5-1 1.1-1a1 1 0 0 1 0 2c-.6 0-1-.4-1-1z" />
             <path fill="#fff" d="M173.4 168.3c0-.5.4-1 1-1s1 .5 1 1-.4 1-1 1a1 1 0 0 1-1-1" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M173.4 168.3c0-.5.4-1 1-1s1 .5 1 1-.4 1-1 1a1 1 0 0 1-1-1z" />
@@ -789,7 +809,8 @@ let language = inject('language');
             <path fill="#fff" stroke="#000" stroke-width=".4"
                 d="M178.2 171.2c0-.5.5-1 1-1 .7 0 1.1.5 1.1 1s-.4 1-1 1a1 1 0 0 1-1-1m-.7 3.1c0-.6.4-1 1-1s1 .4 1 1c0 .5-.4 1-1 1a1 1 0 0 1-1-1m-.2 3c0-.5.5-1 1-1 .7 0 1.1.5 1.1 1s-.4 1-1 1a1 1 0 0 1-1-1m.9 2.8c0-.5.5-1 1-1 .6 0 1.1.5 1.1 1 0 .6-.5 1-1 1a1 1 0 0 1-1.1-1m1.8 2.6c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1" />
             <path fill="#fff" d="M182.3 166.5c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1" />
-            <path fill="none" stroke="#000" stroke-width=".4" d="M182.3 166.5c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1z" />
+            <path fill="none" stroke="#000" stroke-width=".4"
+                d="M182.3 166.5c0-.5.5-1 1-1a1 1 0 0 1 0 2 1 1 0 0 1-1-1z" />
             <path fill="#fff" d="M185.2 165c0-.6.4-1 1-1s1 .4 1 1-.4 1-1 1a1 1 0 0 1-1-1" />
             <path fill="none" stroke="#000" stroke-width=".4"
                 d="M185.2 165c0-.6.4-1 1-1s1 .4 1 1-.4 1-1 1a1 1 0 0 1-1-1z" />
@@ -850,7 +871,8 @@ let language = inject('language');
             <path d="m236.3 224.8-.3-.2v-.2h.1l.4.3.3.2v.2h-.2z" />
             <path fill="none" stroke="#000" stroke-width=".1" d="m236.3 224.8-.3-.2v-.2h.1l.4.3.3.2v.2h-.2l-.3-.3" />
             <path d="m234.6 223.7-.2-.2s-.1 0 0-.1l.3.1.3.1v.2h-.1z" />
-            <path fill="none" stroke="#000" stroke-width=".1" d="m234.6 223.7-.2-.2s-.1 0 0-.1l.3.1.3.1v.2h-.1l-.3-.1" />
+            <path fill="none" stroke="#000" stroke-width=".1"
+                d="m234.6 223.7-.2-.2s-.1 0 0-.1l.3.1.3.1v.2h-.1l-.3-.1" />
             <path d="M233.7 223h.2v.2h-.2s-.1-.1 0-.2" />
             <path fill="none" stroke="#000" stroke-width=".1" d="M233.7 223h.2v.2h-.2s-.1-.1 0-.2z" />
             <path d="M237.3 225.5v-.2h-.3l.1.2z" />
@@ -910,6 +932,48 @@ let language = inject('language');
             <path fill="none" stroke="#000" stroke-width=".2" d="M272.6 216.6v-.2" />
             <path fill="none" d="M279.1 217v-1m-.6 1v-1m-.4 1.1V216" />
         </svg>
+
+
+        <svg @click="language = 'ko'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-kr" viewBox="0 0 640 480">
+            <defs>
+                <clipPath id="kr-a">
+                    <path fill-opacity=".7" d="M-95.8-.4h682.7v512H-95.8z" />
+                </clipPath>
+            </defs>
+            <g fill-rule="evenodd" clip-path="url(#kr-a)" transform="translate(89.8 .4)scale(.9375)">
+                <path fill="#fff" d="M-95.8-.4H587v512H-95.8Z" />
+                <g transform="rotate(-56.3 361.6 -101.3)scale(10.66667)">
+                    <g id="kr-c">
+                        <path id="kr-b" fill="#000001" d="M-6-26H6v2H-6Zm0 3H6v2H-6Zm0 3H6v2H-6Z" />
+                        <use xlink:href="#kr-b" width="100%" height="100%" y="44" />
+                    </g>
+                    <path stroke="#fff" d="M0 17v10" />
+                    <path fill="#cd2e3a" d="M0-12a12 12 0 0 1 0 24Z" />
+                    <path fill="#0047a0" d="M0-12a12 12 0 0 0 0 24A6 6 0 0 0 0 0Z" />
+                    <circle cy="-6" r="6" fill="#cd2e3a" />
+                </g>
+                <g transform="rotate(-123.7 191.2 62.2)scale(10.66667)">
+                    <use xlink:href="#kr-c" width="100%" height="100%" />
+                    <path stroke="#fff" d="M0-23.5v3M0 17v3.5m0 3v3" />
+                </g>
+            </g>
+        </svg>
+
+
+        <svg @click="language = 'ja'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg" id="flag-icons-jp"
+            viewBox="0 0 640 480">
+            <defs>
+                <clipPath id="jp-a">
+                    <path fill-opacity=".7" d="M-88 32h640v480H-88z" />
+                </clipPath>
+            </defs>
+            <g fill-rule="evenodd" stroke-width="1pt" clip-path="url(#jp-a)" transform="translate(88 -32)">
+                <path fill="#fff" d="M-128 32h720v480h-720z" />
+                <circle cx="523.1" cy="344.1" r="194.9" fill="#bc002d" transform="translate(-168.4 8.6)scale(.76554)" />
+            </g>
+        </svg>
+
     </div>
 
 

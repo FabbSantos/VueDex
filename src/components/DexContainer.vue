@@ -261,7 +261,7 @@ function isValidSearch(input) {
                 <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
             </form>
 
-            <Flags/>
+            <Flags :loadAllPokemonButton="loadAllPokemonButton" />
         </div>
         <div class="dex-container">
 
@@ -289,9 +289,8 @@ function isValidSearch(input) {
                 :abilities=state.selectedPokemon.abilities :types=state.selectedPokemon.types
                 :number=state.selectedPokemon.number :stats=state.selectedPokemon.stats
                 :name="state.selectedPokemon.name" :imageUrl="state.selectedPokemon.imageUrl"
-                :gameIndices="state.selectedPokemon.gameIndices"
-                :allSprites=state.selectedPokemon.allSprites 
-                :selectedPokemon = "state.selectedPokemon" />
+                :gameIndices="state.selectedPokemon.gameIndices" :allSprites=state.selectedPokemon.allSprites
+                :selectedPokemon="state.selectedPokemon" />
         </Transition>
 
 
@@ -359,10 +358,10 @@ function isValidSearch(input) {
     z-index: 10;
     background-color: var(--orange-base);
     display: grid;
-    grid-template-columns: .5fr;
+    grid-template-columns: 1fr 1fr;
     padding: 1rem;
     justify-content: start;
-    align-items: start;
+    align-items: center;
     gap: 1rem;
     
     div.button {

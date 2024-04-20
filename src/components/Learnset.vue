@@ -37,7 +37,7 @@ h3 {
 }
 ul {
     list-style-type: none;
-    padding: 0;
+    padding-left: 1rem;
     font-style: italic;
     overflow-y: auto;
     max-height: 15vh;
