@@ -26,6 +26,7 @@ const props = defineProps({
     align-items: start;
     max-width: 100%;
     p {
+        font-size: 1.17em   ;
         font-weight: 700;
     }
 }

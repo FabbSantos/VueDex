@@ -7,7 +7,7 @@ const fallbackLanguage = inject('fallbackLanguage');
 const props = defineProps({
     url: String
 })
-let move =ref([]);
+let game =ref([]);
 
 const fetchMoves = async () => {
     try {
@@ -16,10 +16,10 @@ const fetchMoves = async () => {
             .then(data => {
                 const dataName = data.names.filter((name) => name.language.name === language.value)
                                 .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
-                move.value = dataName[0].name;
+                game.value = dataName[0].name;
             });
     } catch (error) {
-        console.error('Erro ao buscar movimentos:', error);
+        console.error('Erro ao buscar game indices:', error);
     }
 }
 
@@ -30,5 +30,5 @@ onMounted(() => {
 </script>
 
 <template>
-    {{ move  }}
+    {{ game  }}
 </template>

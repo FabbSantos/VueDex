@@ -14,12 +14,14 @@ let pokemonSearch = ref('');
 let showPokeball = ref(true);
 let selectedSpecie = ref('');
 let selectedType = ref('');
-let language = ref('ko');
+let language = ref('es');
+const fallbackLanguage = 'en';
 
 provide('pokemonSearch', pokemonSearch);
 provide('selectedSpecie', selectedSpecie);
 provide('selectedType', selectedType);
 provide('language', language);
+provide('fallbackLanguage', fallbackLanguage);
 
 const loadPokemonData = async (resolve, reject) => {
     lastFunction.value = loadPokemonData;
@@ -89,7 +91,7 @@ const fetchPokemonData = async (resolve, reject, url) => {
             let gameIndices = [];
 
 
-            gameIndices.push(...pokemonUrlData.game_indices.map(g => g.version.name));
+            gameIndices.push(...pokemonUrlData.game_indices.map(g => g.version.url));
 
 
             const validSprites = Object.entries(pokemonUrlData.sprites)
@@ -108,7 +110,7 @@ const fetchPokemonData = async (resolve, reject, url) => {
             })));
 
             stats.push(...pokemonUrlData.stats.map(s => ({
-                name: s.stat.name,
+                url: s.stat.url,
                 base_stat: s.base_stat
             })));
 
@@ -234,11 +236,6 @@ function isValidSearch(input) {
 
         <div class="form-container">
             <form action="" @submit.prevent="submit">
-                <input @keyup.enter="submit" type="text" oninput="this.setCustomValidity('');
-                this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch" />
-
-                <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
-                <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
                 <div class="button" @click="loadAllPokemonButton">
                     <svg fill="#fff" height="20px" width="20px" version="1.1" id="Layer_1"
                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -256,6 +253,11 @@ function isValidSearch(input) {
                         </g>
                     </svg>
                 </div>
+                <input @keyup.enter="submit" type="text" oninput="this.setCustomValidity('');
+                this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch" />
+
+                <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
+                <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
             </form>
 
         </div>
@@ -329,10 +331,23 @@ function isValidSearch(input) {
     -ms-overflow-style: none;
         /* Internet Explorer 10+ */
 }
-.dex-innerContainer::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari, e Opera */
+::-webkit-scrollbar {
+    width: 5px;
 }
+
+/* Personaliza a cor de fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 8px;
+}
+
+/* Personaliza a cor do controle deslizante da barra de rolagem */
+::-webkit-scrollbar-thumb {
+    background: var(--orange-base);
+    border-radius: 8px;
+}
+
+/* Personaliza a cor do controle deslizante da barra de rolagem ao passar o mouse */
 
 .form-container {
     position: fixed;
@@ -342,7 +357,7 @@ function isValidSearch(input) {
     z-index: 10;
     background-color: var(--orange-base);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: .5fr;
     padding: 1rem;
     justify-content: start;
     align-items: start;
@@ -363,9 +378,12 @@ function isValidSearch(input) {
 }
 
 form {
-    display: grid;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
     grid-column: 1;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: .2fr repeat(3, 1fr); */
 }
 .form-container button {
     grid-column: 2;
@@ -390,7 +408,7 @@ input {
     }
 }
 ::placeholder {
-    font-size: .9rem;
+    font-size: .8rem;
     color: rgba(255, 255, 255, .8);
 }
 

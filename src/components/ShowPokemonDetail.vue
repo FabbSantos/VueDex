@@ -6,6 +6,7 @@ import PokemonStats from './PokemonStats.vue';
 import Learnset from './Learnset.vue';
 import PokemonName from './PokemonName.vue';
 import { ref } from 'vue';
+import GameIndices from './GameIndices.vue';
 
     const props = defineProps({
         name: String,
@@ -47,7 +48,10 @@ const setTypes = (t1) => {
                     </div>
                     <PokemonAbilities :abilities="abilities" />
                     <PokemonSprites :allSprites="allSprites"/>
-                    <Learnset :moves="selectedPokemon.pokemon.moves"/>
+                    <div class="gameInfo">
+                        <Learnset :moves="selectedPokemon.pokemon.moves"/>
+                        <GameIndices :gameIndices="selectedPokemon.pokemon.gameIndices"/>
+                    </div>
                     <PokemonStats :stats="stats" :types="pTypes"/>
                 </div>
             </div>
@@ -68,6 +72,12 @@ const setTypes = (t1) => {
         width: 100%;
         height: 100%;
     }
+    .gameInfo {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 1rem;
+    }
     .dex, .name {
         font-weight: 400;
         text-align: center;
@@ -78,6 +88,7 @@ const setTypes = (t1) => {
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 1rem;
         border-bottom: 1px solid;
 
         p{
@@ -86,6 +97,10 @@ const setTypes = (t1) => {
     }
     .overflow {
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding-inline: 1rem;
     }
     .pokemon-info {
         display: flex;
@@ -98,7 +113,7 @@ const setTypes = (t1) => {
         .detailed-info {
             display: flex;
             flex-direction: column;
-            max-width: 30vw;
+            max-width: 40vw;
             max-height: 100%;
             overflow-y: hidden;
             gap: 1rem;
@@ -119,44 +134,10 @@ const setTypes = (t1) => {
         align-items: center;
         span {
             font-weight: 700;
+            font-size: 1.17em;
         }
     }
-    .stats {
-        display: grid;
-        grid-template-rows: repeat(6, 1fr);
-        gap: 1rem;
-        justify-content: start;
-        align-items: start;
-    }
-    .stat {
-        display: grid;
-        grid-template-columns: 1fr 2fr .5fr;
-        gap: 1rem;
-        align-items: center;
-        text-transform: uppercase;
-        font-weight: 700;
-        text-align: right;
-        font-size: 0.8rem;
-    }
     
-    .progress-bar {
-        width: 100%;
-        background-color: #f3f3f3;
-        border-radius: 8px;
-        border: 1px solid black;
-    }
-    
-    .progress {
-        height: 20px;
-        border-radius: 8px;
-        width: 0;
-        transition: width 0.5s ease-in-out;
-    }
-
-    .total_per_stat {
-        text-align: left;
-        font-weight: 700;
-    }
     img {
         max-width: 120px;
         max-height: 120px;

@@ -48,15 +48,16 @@ onMounted(() => {
     }
 
     .abilities span {
-        font-weight: 700;
+        font-weight: 500;
+        font-size: 1.17em;
     }
     .hiddenAbility {
         position: relative;
     }
     .ab-names {
-        display: flex;
-        flex-direction: row;
-        gap: .5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
         justify-content: start;
         align-items: center;
         p {
