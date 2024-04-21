@@ -34,7 +34,7 @@ onMounted(() => {
         <div class="ab-names">
             <p v-for="(ability, index) in abilitiesTranslated" :key="index"
                 :class="{ 'hiddenAbility': ability.isHidden }">
-                {{index > 0 ? ' /' : '' }} {{ ability.name }}
+                {{index > 0 ? '' : '' }} {{ ability.name }}
             </p>
         </div>
     </div>
@@ -58,12 +58,13 @@ onMounted(() => {
         position: relative;
     }
     .ab-names {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        justify-content: start;
-        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+        justify-content: center;
+        align-items: start;
         p {
+            text-align: left;
             font-size: .9rem;
             margin-left: 10px;
             font-weight: 500;

@@ -7,6 +7,7 @@ import Learnset from './Learnset.vue';
 import PokemonName from './PokemonName.vue';
 import { ref } from 'vue';
 import GameIndices from './GameIndices.vue';
+import EvolutionChain from './EvolutionChain.vue';
 
     const props = defineProps({
         name: String,
@@ -48,6 +49,7 @@ const setTypes = (t1) => {
                     </div>
                     <PokemonAbilities :abilities="abilities" />
                     <PokemonSprites :allSprites="allSprites"/>
+                    <EvolutionChain :name="name"/>
                     <div class="gameInfo">
                         <Learnset :moves="selectedPokemon.pokemon.moves"/>
                         <GameIndices :gameIndices="selectedPokemon.pokemon.gameIndices"/>

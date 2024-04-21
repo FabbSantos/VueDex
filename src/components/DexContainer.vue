@@ -53,6 +53,7 @@ const handleCardClick = (pokemon, index) => {
     state.selectedPokemon = pokemon;
     state.selectedCardIndex = index; 
 };
+
 // função principal que faz a requisição dos dados dos pokemons
 const fetchPokemonData = async (resolve, reject, url) => {
     try {
@@ -93,7 +94,6 @@ const fetchPokemonData = async (resolve, reject, url) => {
 
 
             gameIndices.push(...pokemonUrlData.game_indices.map(g => g.version.url));
-
 
             const validSprites = Object.entries(pokemonUrlData.sprites)
                 .filter(([_, sprite]) => sprite  && typeof sprite !== 'object')
