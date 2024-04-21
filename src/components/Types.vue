@@ -47,7 +47,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <input list="types" v-on:change="searchSelectedPokemon" v-model="selectedType"
+    <input list="types" name="types" v-on:change="searchSelectedPokemon" v-model="selectedType"
         placeholder="enter a type of a pokémon">
 
     <datalist id="types">

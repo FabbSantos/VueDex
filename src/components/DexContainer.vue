@@ -254,7 +254,7 @@ function isValidSearch(input) {
                         </g>
                     </svg>
                 </div>
-                <input @keyup.enter="submit" type="text" oninput="this.setCustomValidity('');
+                <input @keyup.enter="submit" name="search" type="text" oninput="this.setCustomValidity('');
                 this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch" />
 
                 <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
