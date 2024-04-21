@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, provide, reactive, ref } from 'vue';
+import { onMounted, provide, reactive, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FunctionQueue from '../utils/FunctionQueue';
 
 import Card from './Card.vue';
@@ -38,6 +39,12 @@ const state = reactive({
     selectedCardIndex: null,
 });
 
+const updateComponent = ref(false);
+
+const { t: $t, locale } = useI18n();
+const switchLanguage = (lang)=> {
+    locale.value = lang;
+}
 
 function clearPokemonList() {
     state.pokemonData = [];
@@ -255,13 +262,14 @@ function isValidSearch(input) {
                     </svg>
                 </div>
                 <input @keyup.enter="submit" name="search" type="text" oninput="this.setCustomValidity('');
-                this.reportValidity()" class="search" placeholder="enter a pokemon or an id" v-model="pokemonSearch" />
+                this.reportValidity()" class="search" :placeholder="$t('message.placeholderSearch')"
+                    v-model="pokemonSearch" />
 
                 <Species :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
                 <Types :fetchPokemonData=fetchPokemonData :clearPokemonList=clearPokemonList />
             </form>
 
-            <Flags :loadAllPokemonButton="loadAllPokemonButton" />
+            <Flags :loadAllPokemonButton="loadAllPokemonButton" :switchLanguage="switchLanguage" />
         </div>
         <div class="dex-container">
 

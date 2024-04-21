@@ -8,7 +8,7 @@ const props = defineProps({
 <template>
 
     <div class="sprites">
-        <p>Sprites:</p>
+        <p> {{ $t('message.Sprites') }}:</p>
         <div class="sprite-container">
             <div v-for="sprite in allSprites" :key="sprite.name" class="sprite">
                 <img :src="sprite" :alt="sprite.name" />

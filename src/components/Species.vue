@@ -48,7 +48,7 @@ const props = defineProps({
 
 <template>
     <input list="species" name="species" v-on:change="searchSelectedPokemon" v-model="selectedSpecie"
-        placeholder="enter a specie of a pokémon">
+        :placeholder="$t('message.placeholderSpecies')">
 
     <datalist id="species">
         <option v-for="specie in species" :value="specie" :key="specie" />

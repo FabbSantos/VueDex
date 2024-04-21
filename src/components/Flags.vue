@@ -1,7 +1,8 @@
 <script setup>
 
 const props = defineProps({
-    loadAllPokemonButton: Function
+    loadAllPokemonButton: Function,
+    switchLanguage: Function
 })
 
 import { inject } from 'vue';
@@ -13,8 +14,8 @@ let language = inject('language');
 <template>
 
     <div class="flags">
-        <svg @click="language ='pt-br'; loadAllPokemonButton() " xmlns="http://www.w3.org/2000/svg" id="flag-br"
-            viewBox="0 0 640 480">
+        <svg @click="language = 'pt-br'; loadAllPokemonButton(); switchLanguage('pt') " xmlns="http://www.w3.org/2000/svg"
+            id="flag-br" viewBox="0 0 640 480">
             <g stroke-width="1pt">
                 <path fill="#229e45" fill-rule="evenodd" d="M0 0h640v480H0z" />
                 <path fill="#f8e509" fill-rule="evenodd" d="m321.4 436 301.5-195.7L319.6 44 17.1 240.7z" />
@@ -83,8 +84,8 @@ let language = inject('language');
             </g>
         </svg>
 
-        <svg @click="language ='en'; loadAllPokemonButton() " xmlns=" http://www.w3.org/2000/svg" id="flag-us"
-            viewBox="0 0 640 480">
+        <svg @click="language = 'en'; loadAllPokemonButton(); switchLanguage('en') " xmlns=" http://www.w3.org/2000/svg"
+            id="flag-us" viewBox="0 0 640 480">
             <path fill="#bd3d44" d="M0 0h640v480H0" />
             <path stroke="#fff" stroke-width="37" d="M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640" />
             <path fill="#192f5d" d="M0 0h364.8v258.5H0" />
@@ -95,8 +96,8 @@ let language = inject('language');
                 d="m0 0 16 11h61 61 61 61 60L47 37h61 61 60 61L16 63h61 61 61 61 60L47 89h61 61 60 61L16 115h61 61 61 61 60L47 141h61 61 60 61L16 166h61 61 61 61 60L47 192h61 61 60 61L16 218h61 61 61 61 60z" />
         </svg>
 
-        <svg @click="language = 'es'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg" id="flag-es"
-            viewBox="0 0 640 480">
+        <svg @click="language = 'es'; loadAllPokemonButton(); switchLanguage('es')" xmlns="http://www.w3.org/2000/svg"
+            id="flag-es" viewBox="0 0 640 480">
             <path fill="#AA151B" d="M0 0h640v480H0z" />
             <path fill="#F1BF00" d="M0 120h640v240H0z" />
             <path fill="#ad1519"
@@ -934,7 +935,7 @@ let language = inject('language');
         </svg>
 
 
-        <svg @click="language = 'ko'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg"
+        <svg @click="language = 'ko'; loadAllPokemonButton(); switchLanguage('ko')" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-kr" viewBox="0 0 640 480">
             <defs>
                 <clipPath id="kr-a">
@@ -961,8 +962,8 @@ let language = inject('language');
         </svg>
 
 
-        <svg @click="language = 'ja'; loadAllPokemonButton()" xmlns="http://www.w3.org/2000/svg" id="flag-icons-jp"
-            viewBox="0 0 640 480">
+        <svg @click="language = 'ja'; loadAllPokemonButton(); switchLanguage('ja')" xmlns="http://www.w3.org/2000/svg"
+            id="flag-icons-jp" viewBox="0 0 640 480">
             <defs>
                 <clipPath id="jp-a">
                     <path fill-opacity=".7" d="M-88 32h640v480H-88z" />

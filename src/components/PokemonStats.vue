@@ -31,12 +31,11 @@
 
 <template>
     <div class="stats">
-        <h3>Base Stats</h3>
+        <h3>{{ $t('message.Stats') }}</h3>
         <div v-for="(stat, index) in statsTranslated" :key="index" class="stat">
             {{ stat.name }}
             <div class="progress-bar">
-                <div class="progress" :class="`type-${types[0]}`"
-                    :style="{ width: `${stat.base_stat / 255 * 100}%` }">
+                <div class="progress" :class="`type-${types[0]}`" :style="{ width: `${stat.base_stat / 255 * 100}%` }">
                 </div>
             </div>
             <span class="total_per_stat">

@@ -44,7 +44,7 @@ const setTypes = (t1) => {
             
                 <div class="overflow">
                     <div class="types">
-                        <span>Type:</span>
+                        <span>{{$t('message.Type')}}:</span>
                         <PokemonType :types="types" :setTypes="setTypes"/>
                     </div>
                     <PokemonAbilities :abilities="abilities" />

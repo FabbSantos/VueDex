@@ -10,10 +10,10 @@ import Move from './Move.vue';
 
 <template>
     <div class="moves-container">
-        <h3>Movepool</h3>
+        <h3> {{ $t('message.Movepool') }}</h3>
         <ul>
             <li v-for="url in moves">
-                <Move :url="url"/>
+                <Move :url="url" />
             </li>
         </ul>
     </div>

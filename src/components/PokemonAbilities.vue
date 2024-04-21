@@ -30,7 +30,7 @@ onMounted(() => {
 
 <template>
     <div class="abilities">
-        <span>Abilities:</span>
+        <span>{{ $t('message.Abilities') }}:</span>
         <div class="ab-names">
             <p v-for="(ability, index) in abilitiesTranslated" :key="index"
                 :class="{ 'hiddenAbility': ability.isHidden }">

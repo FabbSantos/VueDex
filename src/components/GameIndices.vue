@@ -11,10 +11,10 @@ import Game from './Game.vue';
 <template>
 
     <div class="games-container">
-        <h3>Game Indices</h3>
+        <h3> {{ $t('message.Games') }} </h3>
         <ul>
             <li v-for="url in gameIndices">
-                <Game :url="url"/>
+                <Game :url="url" />
             </li>
         </ul>
     </div>

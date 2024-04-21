@@ -59,7 +59,7 @@ const collectEvolutionDetails = async (chain) => {
 </script>
 
 <template>
-    <h3>Evolutionary Chain</h3>
+    <h3>{{ $t('message.Evo') }}</h3>
     <ul>
         <li v-for="(detail, index) in evolutionDetails" :key="index">
             <svg v-if="detail.evolutionMethods === 'level-up' " width="25px" height="25px" viewBox="0 0 32 32"
