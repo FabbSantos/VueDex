@@ -12,14 +12,28 @@ let name = ref('');
 
 const fetchPokemonName = async () => {
     try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.pokemonName}`);
+        // Primeira tentativa: buscar a espécie do Pokémon
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.pokemonName.toLowerCase()}`);
         const data = await response.json();
-        const pokemonName = data.names.filter((name) => name.language.name === language.value)
-            .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
-        name.value = pokemonName[0].name;
-    }
-    catch (error) {
-        console.error(error);
+        const pokemonName = data.names.find(name => name.language.name === language.value) || data.names.find(name => name.language.name === fallbackLanguage);
+        if (pokemonName) {
+            name.value = pokemonName.name;
+        }
+    } catch (error) {
+        // Se a primeira tentativa falhar, tente buscar o formato do Pokémon
+        try {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${props.pokemonName.toLowerCase()}`);
+            const data = await response.json();
+            const formUrl = data.forms[0].url; // Obter a URL do formato do Pokémon
+            const formResponse = await fetch(formUrl);
+            const formData = await formResponse.json();
+            const pokemonName = formData.names.find(name => name.language.name === language.value) || formData.names.find(name => name.language.name === fallbackLanguage);
+            if (pokemonName) {
+                name.value = pokemonName.name;
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 

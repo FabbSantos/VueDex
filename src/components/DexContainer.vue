@@ -47,6 +47,9 @@ const state = reactive({
 const { t: $t, locale } = useI18n();
 const switchLanguage = (lang)=> {
     locale.value = lang;
+
+    localStorage.setItem('selectedLanguage', lang);
+    language.value = lang;
 }
 
 function clearPokemonList() {
@@ -60,6 +63,7 @@ const handleCardClick = (pokemon, index) => {
         state.selectedCardIndex = null;
         return;
     }
+    isExpanded.value = true;
     state.selectedPokemon = pokemon;
     state.selectedCardIndex = index; 
 };
@@ -172,6 +176,10 @@ const loadAllPokemonButton = () => {
 }
 
 onMounted(() => {  
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+        switchLanguage(savedLanguage);
+    }
     const target = document.querySelector('#loader');
 
     // Create an intersection observer instance
@@ -287,7 +295,7 @@ function isValidSearch(input) {
                 </g>
             </svg>
 
-            <div class="dex-innerContainer" :class="{ 'is-expanded': isExpanded }">
+            <div class="dex-innerContainer" :class="{ ' is-expanded' : isExpanded}">
 
                 <p v-if="!state.pokemonData.length &&  !isSearching">No pokémon found...</p>
 
@@ -345,6 +353,7 @@ function isValidSearch(input) {
     background-color: var(--orange-light);
     height: 100%;
     max-width: 95%;
+    transition: transform 0.3s ease-in-out !important;
     clip-path: polygon(0 0, 73% 0, 100% 100%, 0% 100%);
     padding: 2rem;
 
@@ -448,7 +457,7 @@ input {
 
 .is-expanded {
     transition: all .3s ease-in-out; 
-    transform: translateX(-100%);
+    transform: translateX(0%);
     /* ajuste o valor conforme necessário */
 }
 .buttonExpand {
@@ -464,7 +473,8 @@ input {
         display: block;
     }
     .form-container {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         padding: 1rem;
     }
     .dex-container {
@@ -473,7 +483,13 @@ input {
     .dex-innerContainer {
         clip-path: none;
         position: absolute;
+        z-index: 2;
         width: 100%;
+    }
+    .dex-innerContainer .is-expanded {
+        transition: all .3s ease-in-out;
+        transform: translateX(-100%);
+        /* ajuste o valor conforme necessário */
     }
     .buttonExpand {
         display: block;

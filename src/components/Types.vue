@@ -10,26 +10,47 @@ const props = defineProps({
     let selectedSpecie = inject('selectedSpecie');
     let selectedType = inject('selectedType');
     let pokemonSearch = inject('pokemonSearch');
+    const language = inject('language');
 
-    const fetchTypes = async () => {
-        const response = await fetch('https://pokeapi.co/api/v2/type');
-        const data = await response.json();
-        
-        types.value.push(...data.results.map((types) => types.name));
+const fetchTypes = async () => {
+    const response = await fetch('https://pokeapi.co/api/v2/type');
+    const data = await response.json();
+    const urls = data.results.map((type) => type.url);
 
-        while (data.next) {
-            const nextResponse = await fetch(data.next);
-            const nextData = await nextResponse.json();
-            types.value.push(...nextData.results.map((types) => types.name));
-            data.next = nextData.next;
+    // Busca os detalhes de cada tipo para verificar a correspondência da linguagem
+    for (const url of urls) {
+        const typeResponse = await fetch(url);
+        const typeData = await typeResponse.json();
+        const typeName = typeData.names.find(nameObj => nameObj.language.name === language.value)?.name;
+        if (typeName) {
+            types.value.push(typeName);
         }
     }
+
+    // Se houver uma próxima página de resultados, busca os tipos da próxima página
+    while (data.next) {
+        const nextResponse = await fetch(data.next);
+        const nextData = await nextResponse.json();
+        const nextUrls = nextData.results.map((type) => type.url);
+        for (const url of nextUrls) {
+            const typeResponse = await fetch(url);
+            const typeData = await typeResponse.json();
+            const typeName = typeData.names.find(nameObj => nameObj.language.name === language.value)?.name;
+            if (typeName) {
+                types.value.push(typeName);
+            }
+        }
+        data.next = nextData.next;
+    }
+
+    types.value.sort();
+}
 
     const searchSelectedPokemon = async () => {
         if (!selectedType.value) {
             return;
         }
-        const response = await fetch(`https://pokeapi.co/api/v2/type/${selectedType.value}`);
+        const response = await fetch(`https://pokeapi.co/api/v2/type/${selectedType.value.toLowerCase()}`);
         const data = await response.json();
         const foundPokemon = data.pokemon.map((p) => p.pokemon.url);
         props.clearPokemonList();

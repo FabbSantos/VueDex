@@ -983,8 +983,8 @@ let language = inject('language');
 <style scoped>
     svg {
         cursor: pointer;
-        max-width: 20px;   
-        max-height: 20px;   
+        width: 20px;   
+        height: 20px;   
     }
 
     .flags {
