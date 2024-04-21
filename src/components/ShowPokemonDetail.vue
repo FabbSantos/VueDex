@@ -164,4 +164,12 @@ const setTypes = (t1) => {
         cursor: pointer;
         margin: 0 10px;
     }
+
+    @media (max-width: 768px) {
+        .pokemon-info .detailed-info {
+            max-width: 100vw;
+            padding-top: 2rem;
+            padding-bottom: 7rem;
+        }
+    }
 </style>

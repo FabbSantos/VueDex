@@ -86,4 +86,9 @@
     text-align: left;
     font-weight: 700;
 }
+@media (max-width:768px) {
+    .stat {
+        font-size: .5rem;
+    }
+}
 </style>

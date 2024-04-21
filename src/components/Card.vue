@@ -90,4 +90,10 @@
     .selected-card .card {
         background-color: var(--black);
     }
+
+    @media (max-width: 768px) {
+        .card-wrapper {
+            max-width: 90%;
+        }
+    }
 </style>

@@ -30,6 +30,11 @@ const loadPokemonData = async (resolve, reject) => {
     fetchPokemonData(resolve, reject, `https://pokeapi.co/api/v2/pokemon`);
 }
 
+const isExpanded = ref(false);
+const toggleExpand = () => {
+    isExpanded.value = !isExpanded.value;
+};
+
 let lastFunction = ref(loadPokemonData);
 let isSearching = ref(false);
 
@@ -38,8 +43,6 @@ const state = reactive({
     selectedPokemon: null,
     selectedCardIndex: null,
 });
-
-const updateComponent = ref(false);
 
 const { t: $t, locale } = useI18n();
 const switchLanguage = (lang)=> {
@@ -270,10 +273,21 @@ function isValidSearch(input) {
             </form>
 
             <Flags :loadAllPokemonButton="loadAllPokemonButton" :switchLanguage="switchLanguage" />
+
+
         </div>
         <div class="dex-container">
+            <svg width="30px" height="30px" class="buttonExpand" @click="toggleExpand" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M3 21L21 3M3 21H9M3 21L3 15M21 3H15M21 3V9" stroke="#000000" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
 
-            <div class="dex-innerContainer">
+            <div class="dex-innerContainer" :class="{ 'is-expanded': isExpanded }">
 
                 <p v-if="!state.pokemonData.length &&  !isSearching">No pokémon found...</p>
 
@@ -430,5 +444,39 @@ input {
         transform: rotate(-360deg);
     }
 
+}
+
+.is-expanded {
+    transition: all .3s ease-in-out; 
+    transform: translateX(-100%);
+    /* ajuste o valor conforme necessário */
+}
+.buttonExpand {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    bottom: 2%;
+    right: 8%;
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        display: block;
+    }
+    .form-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    .dex-container {
+        clip-path: none;
+    }
+    .dex-innerContainer {
+        clip-path: none;
+        position: absolute;
+        width: 100%;
+    }
+    .buttonExpand {
+        display: block;
+    }
 }
 </style>
