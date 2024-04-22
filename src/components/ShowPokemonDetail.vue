@@ -76,6 +76,7 @@ const setTypes = (t1) => {
     }
     .gameInfo {
         display: flex;
+        align-items: start;
         justify-content: space-between;
         flex-direction: row;
         gap: 1rem;
@@ -144,25 +145,6 @@ const setTypes = (t1) => {
         max-width: 120px;
         max-height: 120px;
         object-fit: contain;
-    }
-    .carousel {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .carousel-image {
-        max-width: 100%;
-        max-height: 200px;
-        /* Ajuste conforme necessário */
-    }
-
-    .carousel-button {
-        background-color: #f3f3f3;
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin: 0 10px;
     }
 
     @media (max-width: 768px) {

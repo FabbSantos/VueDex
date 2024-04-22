@@ -16,6 +16,7 @@ import Game from './Game.vue';
             <li v-for="url in gameIndices">
                 <Game :url="url" />
             </li>
+            <p v-if="gameIndices.length==0">{{ $t('message.noGame') }}</p>
         </ul>
     </div>
 
@@ -42,6 +43,7 @@ ul {
     font-style: italic;
     overflow-y: auto;
     max-height: 15vh;
+    max-width: 10vw;
 } 
 li {
     text-align: left;

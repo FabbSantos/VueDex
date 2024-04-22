@@ -221,7 +221,6 @@ onMounted(() => {
                 </g>
             </svg>
             <img :src="detail.sprite" alt="Sprite" width="60" height="60">
-            <span>{{ isAlternativeForm }}</span>
 
         </li>
     </ul>

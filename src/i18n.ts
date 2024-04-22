@@ -11,6 +11,7 @@ const messages = {
       notEvo: 'No Evolutionary Chain or it is special form',
       Movepool: 'Movepool',
       Games: 'Game Indices',
+      noGame:  'No game indices. This may be a special form.',
       Stats: 'Base Stats',
 
       placeholderSearch: 'pokemon or id, enter to search',
@@ -27,6 +28,7 @@ pt: {
         notEvo: 'Sem Cadeia de Evolução ou é uma forma especial',
         Movepool: 'Golpes',
         Games: 'Jogos',
+        noGame: 'Sem indices de jogos. Esse deve ser uma forma alternativa.',
         Stats: 'Status Base',
         
         placeholderSearch: 'pokemon ou id, enter para pesquisar',
@@ -44,6 +46,7 @@ pt: {
       notEvo: 'Sin Cadena de Evolución o es una forma especial',
       Movepool: 'Movimientos',
       Games: 'Juegos',
+      noGame: 'Sin índices de juegos. Esto puede ser una forma especial.',
       Stats: 'Estadísticas Base',
 
         placeholderSearch: 'pokemon o id, enter para buscar',
@@ -61,6 +64,7 @@ pt: {
       notEvo: '진화 체인 없음 또는 특수 형태임',
       Movepool: '이동 풀',
       Games: '게임 인덱스',
+      noGame: '게임 인덱스 없음. 이것은 특별한 형태일 수 있습니다.',
       Stats: '기본 통계',
 
     placeholderSearch: '포켓몬 또는 ID, 검색하려면 입력',
@@ -77,6 +81,7 @@ pt: {
       notEvo: '進化チェーンなしまたは特別な形態です',
       Movepool: 'わざ',
       Games: 'ゲームインデックス',
+      noGame: 'ゲームインデックスがありません。これは特別な形態かもしれません。',
       Stats: 'ベースステータス',
 
     placeholderSearch: 'ポケモンまたはID、検索するには入力',

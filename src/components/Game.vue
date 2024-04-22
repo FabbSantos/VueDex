@@ -15,7 +15,7 @@ const fetchMoves = async () => {
             .then(response => response.json())
             .then(data => {
                 const dataName = data.names.filter((name) => name.language.name === language.value)
-                                .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
+                .concat(data.names.filter((name) => name.language.name === fallbackLanguage));
                 game.value = dataName[0].name;
             });
     } catch (error) {
