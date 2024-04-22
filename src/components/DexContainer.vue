@@ -10,7 +10,7 @@ import Types from './Types.vue';
 import Flags from './Flags.vue';
 
 let functionQueue = new FunctionQueue();
-const limit = 10;
+const limit = 13;
 let offset = (limit * -1);
 let pokemonSearch = ref('');
 let showPokeball = ref(true);
