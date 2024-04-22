@@ -27,11 +27,10 @@ const fetchPokemonName = async () => {
             const formResponse = await fetch(formUrl);
             const formData = await formResponse.json();
             // Aqui, vamos garantir que estamos buscando o nome corretamente com base na linguagem desejada e na linguagem de fallback
-            const pokemonName = formData.names.find(name => name.language.name === language.value) || formData.names.find(name => name.language.name === fallbackLanguage);
+            const pokemonName = formData.form_names.find(name => name.language.name === language.value) || formData.form_names.find(name => name.language.name === fallbackLanguage);
             if (pokemonName) {
                 name.value = pokemonName.name;
             }
-            console.log(formData);
         } catch (error) {
             console.error(error);
         }
