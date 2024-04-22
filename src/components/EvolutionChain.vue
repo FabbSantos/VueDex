@@ -1,36 +1,44 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 
-    import { ref, onMounted, inject } from 'vue';
-    const props = defineProps({
-       name: String
-    })
+const props = defineProps({
+    name: String
+});
 
-    let evolutionChain = ref([]);
-    let evolutionDetails = ref([]);
+let evolutionChain = ref([]);
+let evolutionDetails = ref([]);
+let evolutionStatus = ref(''); // Nova propriedade para armazenar o status da evolução
+let isAlternativeForm = ref(''); // Nova propriedade para armazenar se o Pokémon é uma forma alternativa
 
-    const language = inject('language');
-    const fallbackLanguage = inject('fallbackLanguage');
+const fetchEvolutionChain = async () => {
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.name}`);
+        const data = await response.json();
+        const evolutionChainUrl = data.evolution_chain.url;
 
-    const fetchEvolutionChain = async () => {
-        try {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.name}`);
-            const data = await response.json();
-            const evolutionChainUrl = data.evolution_chain.url;
+        const response2 = await fetch(evolutionChainUrl);
+        const data2 = await response2.json();
+        evolutionChain.value = data2.chain;
 
-            const response2 = await fetch(evolutionChainUrl);
-            const data2 = await response2.json();
-            evolutionChain.value = data2.chain;
-
-            // Inicializa o array de nomes de evolução
-            evolutionDetails.value = [];
-
-            // Chama a função recursiva para coletar os nomes das espécies
-            collectEvolutionDetails(evolutionChain.value);
+        // Verificar se o Pokémon tem evolução
+        if (evolutionChain.value.evolves_to.length === 0) {
+            evolutionStatus.value = 'Este Pokémon não tem evolução.';
         }
-        catch (error) {
-            console.error(error);
+    } catch (error) {
+        // Se a busca pela espécie falhar, tentar buscar os dados do Pokémon diretamente
+        try {
+            const responsePokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${props.name}`);
+            const dataPokemon = await responsePokemon.json();
+            // Se a busca for bem-sucedida, o Pokémon faz parte de uma espécie e é considerado uma forma alternativa
+            isAlternativeForm.value = true;
+            evolutionStatus.value = 'Este Pokémon é uma forma alternativa.';
+            
+        } catch (error) {
+            console.error('Erro ao buscar os dados do Pokémon:', error);
         }
     }
+    await collectEvolutionDetails(evolutionChain.value);
+};
 
 const collectEvolutionDetails = async (chain) => {
     // Faz uma solicitação para obter os detalhes da espécie atual
@@ -44,23 +52,24 @@ const collectEvolutionDetails = async (chain) => {
     // Adiciona os detalhes à lista
     evolutionDetails.value.push({ sprite, evolutionMethods });
 
-    // Se houver evoluções subsequentes, chama a função recursivamente
+    // Se houver evoluções subsequentes, chama a função recursiva para coletar os detalhes das espécies
     if (chain.evolves_to.length > 0) {
         for (const evolution of chain.evolves_to) {
             await collectEvolutionDetails(evolution);
         }
     }
-}
+};
 
-    onMounted(() => {
-        fetchEvolutionChain();
-    })
-
+onMounted(() => {
+    fetchEvolutionChain();
+});
 </script>
 
 <template>
     <h3>{{ $t('message.Evo') }}</h3>
-    <ul>
+    <p v-if="evolutionStatus">{{ $t('message.notEvo') }}</p>
+
+    <ul v-else>
         <li v-for="(detail, index) in evolutionDetails" :key="index">
             <svg v-if="detail.evolutionMethods === 'level-up' " width="25px" height="25px" viewBox="0 0 32 32"
                 version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -212,6 +221,8 @@ const collectEvolutionDetails = async (chain) => {
                 </g>
             </svg>
             <img :src="detail.sprite" alt="Sprite" width="60" height="60">
+            <span>{{ isAlternativeForm }}</span>
+
         </li>
     </ul>
 
@@ -238,5 +249,8 @@ const collectEvolutionDetails = async (chain) => {
         display: flex;
         gap: 1rem;
         align-items: center;
+    }
+    p {
+        font-style: italic;
     }
 </style>
