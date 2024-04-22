@@ -32,10 +32,9 @@ describe('PokemonName.vue', () => {
       }
     });
 
-    // Aguarda a renderização do componente
     await wrapper.vm.$nextTick();
 
     // Verifica se o nome do Pokémon é exibido
-    expect(wrapper.text()).toContain('Pikachu'); // Substitua 'Pikachu' pelo nome esperado do Pokémon
+    expect(wrapper.text()).toContain('Pikachu'); 
  });
 });

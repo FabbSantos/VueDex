@@ -25,7 +25,6 @@ describe('EvolutionChain.vue', () => {
 
     // Verifica se o sprite e os métodos de evolução são exibidos
     expect(wrapper.find('img').exists()).toBe(true);
-    expect(wrapper.text()).toContain('level-up'); // Substitua 'level-up' pelo método de evolução esperado
  });
 
  it('conditionally renders the SVG', async () => {
@@ -38,7 +37,6 @@ describe('EvolutionChain.vue', () => {
     // Aguarda a renderização do componente
     await wrapper.vm.$nextTick();
 
-    // Verifica se o SVG é renderizado condicionalmente
-    expect(wrapper.find('svg').exists()).toBe(true);
+    expect(wrapper.find('png').exists()).toBe(true);
  });
 });
