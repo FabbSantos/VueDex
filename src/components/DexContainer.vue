@@ -237,6 +237,7 @@ const submit = async () => {
         if (lastFunction.value) lastFunction.value = searchPokemonData;
         isSearching = false;
     }); 
+    toggleExpand()
 }
 
 // Função para validar o input

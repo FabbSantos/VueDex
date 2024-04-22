@@ -150,8 +150,13 @@ const setTypes = (t1) => {
     @media (max-width: 768px) {
         .pokemon-info .detailed-info {
             max-width: 100vw;
+            padding-left: 0;
+            padding-right: 0;
             padding-top: 2rem;
             padding-bottom: 7rem;
+        }
+        .stats {
+            margin: 0 auto;
         }
     }
 </style>
