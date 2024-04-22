@@ -285,15 +285,9 @@ function isValidSearch(input) {
 
         </div>
         <div class="dex-container">
-            <svg width="30px" height="30px" class="buttonExpand" @click="toggleExpand" viewBox="0 0 24 24" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M3 21L21 3M3 21H9M3 21L3 15M21 3H15M21 3V9" stroke="#000000" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
+            <div  class="buttonExpand" @click="toggleExpand">
+                Dex
+            </div>
 
             <div class="dex-innerContainer" :class="{ ' is-expanded' : isExpanded}">
 
@@ -464,8 +458,18 @@ input {
     display: none;
     position: fixed;
     z-index: 10;
-    bottom: 2%;
-    right: 8%;
+    top: 14%;
+    right: 4%;
+    padding: 5px;
+    background-color: var(--orange-base);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: .9rem;
+    font-weight: 700;
+    font-style: italic;
+    box-shadow: -1px 2px black;
 }
 
 @media (max-width: 768px) {
@@ -486,13 +490,13 @@ input {
         z-index: 2;
         width: 100%;
     }
-    .dex-innerContainer .is-expanded {
+    .dex-innerContainer.is-expanded {
         transition: all .3s ease-in-out;
         transform: translateX(-100%);
         /* ajuste o valor conforme necessário */
     }
     .buttonExpand {
-        display: block;
+        display: flex;
     }
 }
 </style>

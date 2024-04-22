@@ -41,7 +41,6 @@ ul {
     font-style: italic;
     overflow-y: auto;
     max-height: 15vh;
-    max-width: 10vw;
     direction: rtl;
 }
 </style>

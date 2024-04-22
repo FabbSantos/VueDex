@@ -43,9 +43,14 @@ ul {
     font-style: italic;
     overflow-y: auto;
     max-height: 15vh;
-    max-width: 10vw;
 } 
 li {
     text-align: left;
+}
+
+@media (min-width: 1024px) {
+    ul {
+        max-width: 10vw;
+    }
 }
 </style>
